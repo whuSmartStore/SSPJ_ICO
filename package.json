@@ -1,0 +1,22 @@
+{
+  "name": "sspj_ico",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "egg-bin dev",
+    "start": "egg-scripts start --daemon",
+    "stop": "egg-scripts stop"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "egg": "^2.2.0",
+    "egg-scripts": "^2.5.0",
+    "pg-promise": "^7.3.3"
+  },
+  "devDependencies": {
+    "egg-bin": "^4.3.7"
+  }
+}
