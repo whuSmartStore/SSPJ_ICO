@@ -52,7 +52,7 @@ module.exports = app => {
         async insert(bill) {
         
             // format bill attributes to table structure
-            const bill = this.formatTableValue(this.table, bill);
+            bill = this.formatTableValue(this.table, bill);
             bill.createAt = Date.parse(new Date());        
 
             // user's email and transaction code doesn't exist

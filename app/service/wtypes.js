@@ -108,5 +108,5 @@ module.exports = app => {
         }
     }
 
-    return Wtype;
+    return Wtypes;
 }

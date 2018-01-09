@@ -6,9 +6,10 @@ module.exports = app => {
 
     class User extends Base {
 
-        index() {
-            console.log(this.app.db);
-            this.response(200, 'index test successed');
+        async index() {
+            const str = 'select * from wallets';
+            const wallets = await this.app.db.query(str, []);
+            this.response(200, wallets);
         }
     }
 
