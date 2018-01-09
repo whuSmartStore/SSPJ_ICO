@@ -36,11 +36,11 @@ module.exports = appInfo => {
     }
 
     config.db = {
-        user: '',
-        password: '',
-        database: '',
-        host: '',
-        port: '',
+        user: 'sspj_ico',
+        password: 'sspj_ico_11',
+        database: 'sspj_ico',
+        host: '121.201.13.217',
+        port: '25432',
         poolSize: 50
     }
 

@@ -14,9 +14,9 @@ module.exports = appInfo => {
     }
 
     config.db = {
-        user: 'SSPJ_ICO',
-        password: 'SSPJ_ICO_01',
-        database: 'SSPJ_ICO',
+        user: 'sspj_ico',
+        password: 'sspj_ico_01',
+        database: 'sspj_ico',
         host: '127.0.0.1',
         port: '5432',
         poolSize: 5,
