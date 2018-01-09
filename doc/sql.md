@@ -78,7 +78,9 @@ CREATE TABLE public.questions
 (
     id serial primary key,
     name varchar(50),
-    link varchar(200)
+    link varchar(200),
+    count int,
+    stable boolean
 ) 
 WITH (
   OIDS = FALSE
@@ -104,6 +106,25 @@ WITH (
   OIDS = FALSE
 );
 ALTER TABLE public.wallets
+  OWNER TO sspj_ico;
+
+```
+
+
+
+### wtypes
+
+```postgresql
+
+CREATE TABLE public.wtypes
+(
+    id serial primary key,
+    type varchar(50)
+) 
+WITH (
+  OIDS = FALSE
+);
+ALTER TABLE public.wtypes
   OWNER TO sspj_ico;
 
 ```
