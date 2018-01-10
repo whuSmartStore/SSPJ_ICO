@@ -128,3 +128,24 @@ ALTER TABLE public.wtypes
   OWNER TO sspj_ico;
 
 ```
+
+
+
+### sspj
+
+```postgresql
+
+CREATE TABLE public.sspj
+(
+    id serial primary key,
+    type varchar(50),
+    amount bigint,
+    usage varchar(50)
+) 
+WITH (
+  OIDS = FALSE
+);
+ALTER TABLE public.sspj
+  OWNER TO sspj_ico;
+
+```

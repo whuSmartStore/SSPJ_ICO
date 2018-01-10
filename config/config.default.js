@@ -44,5 +44,63 @@ module.exports = appInfo => {
         poolSize: 50
     }
 
+    config.bunoses = [
+        {
+            time: 1515559629000,
+            buons: 0.2,
+            amount: 13777764
+        },
+        {
+            time: 1515559659000,
+            buons: 0.15,
+            amount: 13777764
+        },
+        {
+            time: 1515559684000,
+            buons: 0.13,
+            amount: 13777764
+        },
+        {
+            time: 1515559707000,
+            buons: 0.11,
+            amount: 13777764
+        },
+        {
+            time: 1515559720000,
+            buons: 0.09,
+            amount: 13777764
+        },
+        {
+            time: 1515559738000,
+            buons: 0.07,
+            amount: 13777764
+        },
+        {
+            time: 1515559756000,
+            buons: 0.05,
+            amount: 13777764
+        },
+        {
+            time: 1515559773000,
+            buons: 0.03,
+            amount: 13777764
+        },
+        {
+            time: 1515559787000,
+            buons: 0,
+            amount: 27555528
+        }
+    ];
+
+    config.icoInfo = {
+        duration: '2017-6-1 2017-10-1',
+        SSPJ: 41333292,
+        softCap: '$ 12253000 ',
+        hardCap: '8267 ETH',
+        salePrice: '1 ETH = 5000 SSPJ(1 SSPJ = 0.0002 ETH)',
+        minPurchase: 0.01,
+        maxPurchase: 'unlimited'
+    }
+
     return config;
 }
