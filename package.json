@@ -14,7 +14,8 @@
   "dependencies": {
     "egg": "^2.2.0",
     "egg-scripts": "^2.5.0",
-    "pg-promise": "^7.3.3"
+    "pg-promise": "^7.3.3",
+    "validator": "^9.2.0"
   },
   "devDependencies": {
     "egg-bin": "^4.3.7"

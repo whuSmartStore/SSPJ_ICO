@@ -86,7 +86,7 @@ module.exports = app => {
             }
 
             // user exists
-            if (await this.exists(email)) {
+            if (await this.exists(user.email)) {
                 return false;
             }
 
@@ -118,6 +118,19 @@ module.exports = app => {
             try {
                 await this._update('users', user, wheres);
                 return true;
+            } catch (err) {
+                this.logger.error(err);
+                return false;
+            }
+        }
+
+
+        // Get user's password through user's email
+        async getPasswd(email) {
+
+            try {
+                const passwd = await this._query('users', ['password'], { email });
+                return passwd[0] && passwd[0].password;
             } catch (err) {
                 this.logger.error(err);
                 return false;

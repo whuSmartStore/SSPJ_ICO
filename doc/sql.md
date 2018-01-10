@@ -5,13 +5,13 @@
 CREATE TABLE public.users
 (
     email varchar(50) primary key,
-    password varchar(50),
+    password varchar(250),
     firstName varchar(50),
     lastName varchar(50),
     address varchar(50),
     sspj bigint,
     ethAddress varchar(50),
-    token varchar(50),
+    token varchar(250),
     auth boolean,
     createAt bigint
 )
@@ -32,7 +32,7 @@ ALTER TABLE public.users
 CREATE TABLE public.followers
 (
     id serial primary key,
-    token varchar(50),
+    token varchar(250),
     email varchar(50)
 ) 
 WITH (
