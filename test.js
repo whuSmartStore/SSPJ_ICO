@@ -1,5 +1,3 @@
 
 
-const url = "/public/index.html";
-
-console.log(url.search(/index/i));
+const url = "/api/v1/users/exists/index.test";

@@ -7,6 +7,7 @@ module.exports = app => {
     app.redirect('/', '/api/v1/users/sign/register');
     
     app.get('/api/v1/users/exists/:username', 'users.exists');
+    app.get('/api/v1/users/info/userInfo', 'users.getUserInfo');
 
     app.post('/api/v1/users/sign/register', 'users.register');
     app.post('/api/v1/users/sign/signIn/default', 'users.signIn');

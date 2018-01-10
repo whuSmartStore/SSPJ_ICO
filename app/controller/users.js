@@ -15,10 +15,23 @@ module.exports = app => {
 
         // Judge some user exists or not(used to judge before register)
         async exists() {
-
             const email = this.ctx.params.username;
             const exists = await this.service.users.exists(email);
             this.response(200, { exists });
+        }
+
+
+        // Get investor's info
+        async getUserInfo() {
+            
+            const email = this.ctx.cookies.get('username', {
+                singed: true,
+                encrypt: false
+            });
+
+            const user = await this.service.users.query({ email });
+
+            this.response(200, user);
         }
 
 
@@ -26,7 +39,6 @@ module.exports = app => {
         async register() {
 
             const user = this.ctx.request.body;
-            console.log(user);
 
             // user's email and password doesn't exist
             if (!user.email || !user.password) {
