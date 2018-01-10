@@ -22,6 +22,17 @@ module.exports = appInfo => {
                 if (url.search(/index/i) !== -1) {
                     flag = true;
                 }
+
+                // sign path ignore
+                if (url.search(/sign/i) !== -1) {
+                    flag = true;
+                }
+
+                // path '/api/v1/users/exists/' ignore
+                if (url.search('/api/v1/users/exists/') !== -1) {
+                    flag = true;
+                }
+
                 return flag;
             },
         },
@@ -115,13 +126,13 @@ module.exports = appInfo => {
     ];
 
     config.icoInfo = {
-        duration: '2017-6-1 2017-10-1',
-        SSPJ: 41333292,
-        softCap: '$ 12253000 ',
-        hardCap: '8267 ETH',
-        salePrice: '1 ETH = 5000 SSPJ(1 SSPJ = 0.0002 ETH)',
-        minPurchase: 0.01,
-        maxPurchase: 'unlimited'
+        duration: ['Main Sale', '2017-6-1 2017-10-1'],
+        SSPJ: ['Sales Volume on Main Sale', 41333292],
+        softCap: ['Soft-cap on Main Sale', '$ 12253000'],
+        hardCap: ['Hard-cap on Main Sale', '8267 ETH'],
+        salePrice: ['Main Sale price', '1 ETH = 5000 SSPJ(1 SSPJ = 0.0002 ETH)'],
+        minPurchase: ['Minimum Purchase Transaction Sum', 0.01],
+        maxPurchase: ['Maximum Purchase Transaction Sum', 'unlimited'],
     }
 
     return config;

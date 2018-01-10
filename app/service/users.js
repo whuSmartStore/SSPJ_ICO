@@ -73,6 +73,24 @@ module.exports = app => {
         }
 
 
+        // Query user's info
+        async query(attributes, wheres) {
+
+            attributes = this._formatQueryAttributes(this.table, attributes);
+            wheres = this._formatTableValue(this.table, wheres);
+
+            try {
+                let users;
+                if (wheres.email || wheres.token) {
+                    users = await this._query('users', attributes, wheres);
+                    return users[0] || [];
+                }
+                
+                users = await this._query('users', attributes, where)
+            }
+        }
+
+
         // Insert a user info record to table users
         async insert(user) {
 
