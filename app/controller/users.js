@@ -29,9 +29,46 @@ module.exports = app => {
                 encrypt: false
             });
 
-            const user = await this.service.users.query({ email });
-
+            const user = await this.service.users.query(['firstName', 'lastName', 'address', 'ethAddress', 'ethAddressModifiable'], { email });
             this.response(200, user);
+        }
+
+
+        // Get SSPJ amount user invested
+        async getSSPJ() {
+
+            const email = this.ctx.cookies.get('username', {
+                signed: true,
+                encrypt: false
+            });
+
+            const sspj = await this.service.users.query(['firstName', 'sspj'], { email });
+            this.response(200, sspj);
+        }
+
+
+        // Modify user's ico info
+        async modifyUserInfo() {
+
+            const email = this.ctx.cookies.get('username', {
+                signed: true,
+                encrypt: false
+            });
+
+            const user = this.ctx.reuqest.body;
+            if (!await this.service.users.update(user, { email })) {
+                this.response(403, `update user's info failed`);
+                return;
+            }
+
+            this.response(203, `update user's info successed`);
+        }
+
+
+        // Validate user's email
+        async validateEmail() {
+
+            
         }
 
 
