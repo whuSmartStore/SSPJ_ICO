@@ -4,6 +4,8 @@ module.exports = app => {
 
     app.get('/api/v1/users/index', 'users.index');
 
+    app.redirect('/', '/api/v1/users/sign/register');
+    
     app.get('/api/v1/users/exists/:username', 'users.exists');
     app.post('/api/v1/users/sign/register', 'users.register');
     app.post('/api/v1/users/sign/signIn/default', 'users.signIn');

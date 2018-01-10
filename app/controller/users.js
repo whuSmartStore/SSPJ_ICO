@@ -9,9 +9,7 @@ module.exports = app => {
 
         // Index test
         async index() {
-            const str = 'select * from wallets';
-            const wallets = await this.app.db.query(str, []);
-            this.response(200, wallets);
+            this.response(200, 'index test successed');
         }
 
 

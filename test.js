@@ -1,4 +1,10 @@
-const crypto = require('crypto');
+const ignorePath = {
+    "/public/404.html": true,
+    "/public/logIn.html": true,
+    "/public/register.html": true,
+    "/": true
+}
 
-const secret = crypto.createHmac('sha256', 'test').digest('hex');
-console.log(secret);
+const url = "/public/404.html";
+
+console.log(ignorePath[url]);

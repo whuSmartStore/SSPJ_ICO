@@ -1,17 +1,33 @@
 const path = require('path');
 
+
+const ignorePath = {
+    "/public/404.html": true,
+    "/public/logIn.html": true,
+    "/public/register.html": true,
+    "/": true
+}
+
 module.exports = appInfo => {
 
     const config = {
 
-        // middleware: ['validate', ],
+        middleware: ['validate', ],
 
-        // validate: {
-        //     ignore(ctx) {
-        //         let flag = false;
-        //         const url = ctx.request.url; 
-        //     },
-        // },
+        validate: {
+            ignore(ctx) {
+
+                // get request url
+                let flag = false;
+                const url = ctx.request.url;
+                
+                // judge request url is ignored or not
+                if (ignorePath[url]) {
+                    flag = true;
+                }
+                return flag;
+            },
+        },
         
         keys: appInfo.name + Date.parse(new Date()),
 
