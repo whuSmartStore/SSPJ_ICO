@@ -7,6 +7,8 @@
     "/public/404.html": true,
     "/public/logIn.html": true,
     "/public/register.html": true,
+    "/public/resetPW.html": true,
+    "/public/activeAccount.html": true,
     "/": true
   },
   "scripts": {
