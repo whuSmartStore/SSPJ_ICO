@@ -163,6 +163,29 @@ module.exports = app => {
             // user logIn with google account
             this.response(200, 'waited to complete');
         }
+
+
+        // User logout
+        async logout() {
+            
+            const username = this.ctx.cookies.get('username', {
+                signed: true,
+                encrypt: false
+            });
+
+            const password = this.ctx.cookies.get('password', {
+                signed: true,
+                encrypt: true
+            });
+
+            // if username or password exists in cookies remove them
+            if (username || password) {
+                this.ctx.cookies.set('username', null);
+                this.ctx.cookies.set('password', null);
+            }
+
+            this.ctx.redirect('/public/register.html');
+        }
     }
 
     return User;

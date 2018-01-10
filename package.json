@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "ignorePath": {
+    "/public/404.html": true,
+    "/public/logIn.html": true,
+    "/public/register.html": true,
+    "/": true
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "egg-bin dev",

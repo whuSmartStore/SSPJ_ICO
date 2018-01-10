@@ -1,13 +1,5 @@
 const path = require('path');
 
-
-const ignorePath = {
-    "/public/404.html": true,
-    "/public/logIn.html": true,
-    "/public/register.html": true,
-    "/": true
-}
-
 module.exports = appInfo => {
 
     const config = {
@@ -22,7 +14,12 @@ module.exports = appInfo => {
                 const url = ctx.request.url;
                 
                 // judge request url is ignored or not
-                if (ignorePath[url]) {
+                if (appInfo.pkg.ignorePath[url]) {
+                    flag = true;
+                }
+
+                // index test path ignore
+                if (url.search(/index/i) !== -1) {
                     flag = true;
                 }
                 return flag;
