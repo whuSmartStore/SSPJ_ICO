@@ -1,0 +1,88 @@
+@import "common.css";
+
+
+tr th:nth-child(1){
+	height: 30px;
+	width: 50px;
+	text-align: center;
+}
+tr th:nth-child(2){
+	height: 30px;
+	width: 120px;
+	text-align: center;
+}
+tr th:nth-child(3){
+	height: 30px;
+	width: 120px;
+	text-align: center;
+}
+tr th:nth-child(4){
+	height: 30px;
+	width: 120px;
+	text-align: center;
+}
+tr th:nth-child(5){
+	height: 30px;
+	width: 240px;
+	text-align: center;
+}
+tr td{
+	text-align: center;
+	height: 30px;
+}
+
+#handleRecord{
+	display: none;
+	border:1px solid #f1f1f1;
+	background-color: #f1f1f1;
+	margin: 0 auto;
+	width: 500px;
+	height: 300px;
+	z-index: 2;
+	position: absolute;
+	top: 250px;
+	left: 0px;
+	right: 0px;
+}
+
+
+
+#handleRecord p{
+	height: 30px;
+	line-height: 30px;
+	font-size: 22px;
+	background-color: #5bc0de;
+    border-color: #46b8da;
+	color: white;
+	text-align: center;
+}
+
+#handleRecord label{
+	display: inline-block;
+	height: 40px;
+	line-height: 40px;
+	width: 30%;
+	text-align: center;
+}
+
+#handleRecord input,#handleRecord select{
+	display: inline-block;
+	height: 40px;
+	width: 60%;
+}
+#handleRecord button{
+	display: inline-block;
+	background-color: #5bc0de;
+    border-color: #46b8da;
+	border-radius: 8px;
+	width: 100px;
+	height: 30px;
+	margin: 20px;
+}
+#handleRecord #btn{
+	width: 300px;
+	margin: 0 auto;
+	color:white;
+}
+
+

@@ -1,9 +1,37 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>register page</title>
-    </head>
-    <body>
-        <h1>Register page</h1>
-    </body>
+<head>
+	<title>登录</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/login.css">
+</head>
+<body>
+	<header>
+		<img id="logo" src="imgs/logo.svg" />
+		<p>微晟防损后台管理系统</p>
+	</header>
+	<form id="form" method="post" action="" onsubmit="signIn('/api/v1/users/sign/register?_csrf=')">
+		<input type="text" name="email" placeholder="请输入用户名"><br/>
+        <input type="password" name="password" placeholder="请输入密码" id="password1"><br/>
+        <input type="password" placeholder="请重复输入一遍" id="password2"><br/>
+		<input type="submit"  value="注册" class="submit" disabled='' id="submit">
+	</form>
+	<!-- user :(1-5) ;password : wesine027 -->
+	<script type="text/javascript" src="bootstrap-3.3.7-dist/jquery/jquery.min.js"></script>
+	<script src="js/libs/js.cookie.min.js"></script>
+    <script type="text/javascript" src="js/func.js"></script>
+    <script>
+        window.onload = function(){
+            $("#password2").bind('input propertychange', function () {
+                if( $('#password2').val() != '' && $('#password2').val() == $('#password1').val() ){
+                    $('#submit').removeAttr('disabled');
+                }else{
+                    $('#submit').attr('disabled','');
+                }
+            });
+        }
+    
+    </script>
+</body>
 </html>
