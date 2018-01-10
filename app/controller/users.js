@@ -72,7 +72,7 @@ module.exports = app => {
                 encrypt: true
             });
 
-            this.ctx.redirect('/public/ico/user.html');
+            this.ctx.redirect('/public/ico/dashbord.html');
         }
 
          
@@ -91,7 +91,7 @@ module.exports = app => {
             });
 
             if (username && password && (password === this.service.users.getPasswd(username))) {
-                this.ctx.redirect('/public/ico/user.html');
+                this.ctx.redirect('/public/ico/dashbord.html');
                 return;
             }
             
@@ -111,7 +111,7 @@ module.exports = app => {
             const secret = crypto.createHmac('sha256', user.password).digest('hex')
             password = await this.service.users.getPasswd(user.email);
             if (password !== false && secret === password) {
-                this.ctx.redirect('/public/ico/user.html');
+                this.ctx.redirect('/public/ico/dashbord.html');
                 return;
             }
             
@@ -134,7 +134,7 @@ module.exports = app => {
             });
 
             if (username && password && (password === this.service.users.getPasswd(username))) {
-                this.ctx.redirect('/public/ico/user.html');
+                this.ctx.redirect('/public/ico/dashbord.html');
                 return;
             }
 
@@ -158,7 +158,7 @@ module.exports = app => {
             });
 
             if (username && password && (password === this.service.users.getPasswd(username))) {
-                this.ctx.redirect('/public/ico/user.html');
+                this.ctx.redirect('/public/ico/dashbord.html');
                 return;
             }
 

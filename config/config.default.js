@@ -3,6 +3,15 @@ const path = require('path');
 module.exports = appInfo => {
 
     const config = {
+
+        // middleware: ['validate', ],
+
+        // validate: {
+        //     ignore(ctx) {
+        //         let flag = false;
+        //         const url = ctx.request.url; 
+        //     },
+        // },
         
         keys: appInfo.name + Date.parse(new Date()),
 
