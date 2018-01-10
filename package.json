@@ -7,8 +7,9 @@
     "/public/404.html": true,
     "/public/logIn.html": true,
     "/public/register.html": true,
-    "/": true,
-    "/api/v1/icoInfo/info": true
+    "/public/resetPW.html": true,
+    "/public/activeAccount.html": true,
+    "/": true
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

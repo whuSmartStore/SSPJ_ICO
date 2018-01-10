@@ -14,7 +14,7 @@ module.exports = options => {
             encrypt: true
         });
 
-        if (username || password || (password !== await ctx.service.users.getPasswd(username))) {
+        if (!username || !password || (password !== await ctx.service.users.getPasswd(username))) {
             ctx.redirect('/public/register.html');
             return;
         }

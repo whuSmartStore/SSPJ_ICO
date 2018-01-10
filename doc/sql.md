@@ -11,6 +11,7 @@ CREATE TABLE public.users
     address varchar(50),
     sspj bigint,
     ethAddress varchar(50),
+    ethAddressModifiable boolean,
     token varchar(250),
     auth boolean,
     createAt bigint

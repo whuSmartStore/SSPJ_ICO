@@ -17,6 +17,7 @@ module.exports = app => {
                     address: undefined,
                     sspj: undefined,
                     ethAddress: undefined,
+                    ethAddressModifiable: undefined,
                     token: undefined,
                     auth: undefined,
                     createAt: undefined
@@ -76,17 +77,28 @@ module.exports = app => {
         // Query user's info
         async query(attributes, wheres) {
 
+            // format attributes and wheres' attributes to table users
             attributes = this._formatQueryAttributes(this.table, attributes);
             wheres = this._formatTableValue(this.table, wheres);
 
-            try {
-                let users;
-                if (wheres.email || wheres.token) {
-                    users = await this._query('users', attributes, wheres);
-                    return users[0] || [];
+            // query condition includes unique identifier
+            if (wheres.email || wheres.token) {
+                try {
+                    const user = await this._query('users', attributes, wheres);
+                    return user[0] || {};
+                } catch (err) {
+                    this.logger.error(err);
+                    return {};
                 }
-                
-                users = await this._query('users', attributes, where)
+            }
+
+            // query condition doesn't includes unique identifier
+            try {
+                const users = await this._query('users', attributes, wheres);
+                return users;
+            } catch (err) {
+                this.logger.error(err);
+                return [];
             }
         }
 
@@ -124,11 +136,10 @@ module.exports = app => {
 
             // format user's attributes and wheres' attribute to table structure
             user = this._formatTableValue(this.table, user);
-            user.auth = true;
-            wheres = this._formatTableValue(this.table, user);
+            wheres = this._formatTableValue(this.table, wheres);
 
             // do not specified user
-            if (!user.email) {
+            if (!wheres.email) {
                 return false;
             }
 
