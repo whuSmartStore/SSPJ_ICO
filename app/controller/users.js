@@ -1,4 +1,3 @@
-const crypto = require('crypto');
 const validator = require('validator');
 
 module.exports = app => {
@@ -58,11 +57,10 @@ module.exports = app => {
 
 
         // Active account(through validate email)
-        sendEmail(email) {
-            const token = crypto.createHmac('sha256', email).digest('hex');
-            const url = `/api/v1/users/sign/auth/validateEmail?token=${token}`;
-
-            //--------------- send email
+        async sendEmail(email) {
+            const token = this.service.crypto.encrypto(email);
+            const url = `http://121.201.13.217/27002/api/v1/users/sign/auth/validateEmail?token=${token}`;
+            await this.service.email.activeAccount(email, url);
         }
 
 
@@ -77,7 +75,7 @@ module.exports = app => {
                 return;
             }
 
-            this.sendEmail(email);
+            await this.sendEmail(email);
             this.response(203, `please check your email(${email} to active your account`);
         }
 
@@ -86,7 +84,7 @@ module.exports = app => {
         async validateEmail() {
             
             const token = this.ctx.query.token;
-            const email = crypto;           ///---------------------
+            const email = this.service.crypto.decrypto(token);
 
             // token error
             if (!await this.service.users.exists(email)) {
@@ -128,8 +126,8 @@ module.exports = app => {
             }
 
             // generate user's info and encrypt some info
-            user.token = crypto.createHmac('sha256', user.email).digest('hex');
-            user.password = crypto.createHmac('sha256', user.password).digest('hex');
+            user.token = this.service.crypto.generateToken(user.email);
+            user.password = this.service.crypto.encrypto(user.password);
             user.createAt = Date.parse(new Date());
             user.sspj = 0;
 
@@ -140,7 +138,7 @@ module.exports = app => {
             }
 
             // active account(through validate email) and redirect to login page
-            this.sendEmail(user.email);
+            await this.sendEmail(user.email);
             this.response(203, 'Email has beed sent, please check you email and click active link to active account');
         }
 
@@ -148,7 +146,7 @@ module.exports = app => {
         // Redirect to password reset page
         async getresetPWPage() {
             const token = this.ctx.query.token;
-            this.ctx.redirect(`/public/resetPW.html?token=${token}`);
+            this.ctx.redirect(`http://121.201.13.217/27002/public/resetPW.html?token=${token}`);
         }
 
 
@@ -157,7 +155,7 @@ module.exports = app => {
 
             let password = this.ctx.request.body.password;
             const token = this.ctx.query.token;
-            const email = crypto;                   ///--------------------------------------
+            const email = this.service.crypto.decrypto(token);
             
             // Token error
             if (!await this.service.users.exists(email)) {
@@ -166,7 +164,7 @@ module.exports = app => {
             }
 
             // reset password
-            password = crypto.createHmac('sha256', password).digest('hex');
+            password = this.service.crypto.encrypto(password);
             if (!await this.service.users.update({ password }, { email })) {
                 this.response(403, 'reset password failed');
                 return;
@@ -189,10 +187,10 @@ module.exports = app => {
             }
 
             // generate email token and url of password page
-            const token = crypto.createHmac('sha256', email).digest('hex');
+            const token = this.service.crypto.encrypto(email);
             const url = `/api/v1/users/sign/signIn/resetPWPage?token=${token}`;
-
-            // ------ send email
+            await this.service.email.resetPassword(email, url);
+            this.response(203, 'Please check your email and reset your password');
         }
 
         
@@ -225,7 +223,7 @@ module.exports = app => {
                 return;
             }
 
-            const secret = crypto.createHmac('sha256', user.password).digest('hex')
+            const secret = this.service.crypto.encrypto(user.password);
             const password = await this.service.users.getPasswd(user.email);
 
             if (password !== false && secret === password) {

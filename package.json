@@ -23,6 +23,7 @@
   "dependencies": {
     "egg": "^2.2.0",
     "egg-scripts": "^2.5.0",
+    "nodemailer": "^4.4.1",
     "pg-promise": "^7.3.3",
     "validator": "^9.2.0"
   },
