@@ -128,7 +128,7 @@ module.exports = app => {
 
             // generate user's info and encrypt some info
             user.token = this.service.crypto.generateToken(user.email);
-            user.password = this.service.encrypto(user.password);
+            user.password = this.service.crypto.encrypto(user.password);
             user.createAt = Date.parse(new Date());
             user.sspj = 0;
 
