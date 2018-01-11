@@ -9,11 +9,11 @@ CREATE TABLE public.users
     firstName varchar(50),
     lastName varchar(50),
     address varchar(50),
-    sspj bigint,
+    sspj bigint default 0,
     ethAddress varchar(50),
-    ethAddressModifiable boolean,
+    ethAddressModifiable boolean default true,
     token varchar(250),
-    auth boolean,
+    auth boolean default false,
     createAt bigint
 )
 WITH (

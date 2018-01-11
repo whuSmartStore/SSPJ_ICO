@@ -15,7 +15,7 @@ module.exports = options => {
         });
 
         if (!username || !password || (password !== await ctx.service.users.getPasswd(username))) {
-            ctx.redirect('/public/register.html');
+            ctx.redirect('/public/login.html');
             return;
         }
 
