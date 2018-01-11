@@ -29,6 +29,8 @@ module.exports = app => {
                 encrypt: false
             });
 
+            console.log(email);
+
             const user = await this.service.users.query(['firstName', 'lastName', 'address', 
                 'ethAddress', 'ethAddressModifiable'], { email });
             this.response(200, user);
@@ -150,7 +152,7 @@ module.exports = app => {
 
             // active account(through validate email) and redirect to login page
             this.sendEmail(user.email);
-            this.ctx.redirect('/api/v1/users/sign/signIn/default');
+            this.response(203, 'Email has beed sent, please check you email and click active link to active account');
         }
 
 
@@ -228,15 +230,15 @@ module.exports = app => {
             }
 
             // redirect to activeAccount page when account hasn't been actived
-            const auth = await this.service.users.query(['auth'], { email });
-            if (auth === '{}' || auth.auth) {
+            const auth = await this.service.users.query(['auth'], { email: user.email });
+            if (auth === '{}' || !auth.auth) {
                 this.ctx.redirect(`/public/activeAccount.html?email=${user.email}`);
                 return;
             }
 
             const secret = crypto.createHmac('sha256', user.password).digest('hex')
             const password = await this.service.users.getPasswd(user.email);
-            
+
             if (password !== false && secret === password) {
                 // set email and password to cookies and redirect to dashbord page
                 this.setCookies(user.email, password);
