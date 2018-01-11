@@ -57,11 +57,10 @@ module.exports = app => {
 
 
         // Active account(through validate email)
-        sendEmail(email) {
+        async sendEmail(email) {
             const token = this.service.crypto.encrypto(email);
             const url = `/api/v1/users/sign/auth/validateEmail?token=${token}`;
-
-            //--------------- send email
+            await this.service.email.activeAccount(email, url);
         }
 
 
@@ -76,7 +75,7 @@ module.exports = app => {
                 return;
             }
 
-            this.sendEmail(email);
+            await this.sendEmail(email);
             this.response(203, `please check your email(${email} to active your account`);
         }
 
@@ -139,7 +138,7 @@ module.exports = app => {
             }
 
             // active account(through validate email) and redirect to login page
-            this.sendEmail(user.email);
+            await this.sendEmail(user.email);
             this.response(203, 'Email has beed sent, please check you email and click active link to active account');
         }
 
@@ -190,8 +189,8 @@ module.exports = app => {
             // generate email token and url of password page
             const token = this.service.crypto.encrypto(email);
             const url = `/api/v1/users/sign/signIn/resetPWPage?token=${token}`;
-
-            // ------ send email
+            await this.service.email.resetPassword(email, url);
+            this.response(203, 'Please check your email and reset your password');
         }
 
         
