@@ -4,17 +4,12 @@ module.exports = options => {
 
     return async (ctx, next) => {
 
-        const username = ctx.cookies.get('username', {
-            signed: true,
-            encrypt: false
-        });
+        const Base = require('./base')(ctx);
+        const base = new Base();
+        const email = base.getEmail();
+        const password = base.getPassword();
 
-        let password = ctx.cookies.get('password', {
-            signed: true,
-            encrypt: true
-        });
-
-        if (!username || !password || (password !== await ctx.service.users.getPasswd(username))) {
+        if (!email || !password || (password !== await ctx.service.users.getPasswd(email))) {
             ctx.redirect('/public/login.html');
             return;
         }

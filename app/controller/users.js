@@ -24,12 +24,7 @@ module.exports = app => {
         // Get investor's info
         async getUserInfo() {
             
-            const email = this.ctx.cookies.get('username', {
-                singed: true,
-                encrypt: false
-            });
-
-            console.log(email);
+            const email = this.getEmail();
 
             const user = await this.service.users.query(['firstName', 'lastName', 'address', 
                 'ethAddress', 'ethAddressModifiable'], { email });
@@ -40,10 +35,7 @@ module.exports = app => {
         // Get SSPJ amount user invested
         async getSSPJ() {
 
-            const email = this.ctx.cookies.get('username', {
-                signed: true,
-                encrypt: false
-            });
+            const email = this.getEmail();
 
             const sspj = await this.service.users.query(['firstName', 'sspj'], { email });
             this.response(200, sspj);
@@ -53,10 +45,7 @@ module.exports = app => {
         // Modify user's ico info
         async modifyUserInfo() {
 
-            const email = this.ctx.cookies.get('username', {
-                signed: true,
-                encrypt: false
-            });
+            const email = this.getEmail();
 
             const user = this.ctx.reuqest.body;
             if (!await this.service.users.update(user, { email })) {
@@ -281,18 +270,12 @@ module.exports = app => {
         // User logout
         async logout() {
             
-            const username = this.ctx.cookies.get('username', {
-                signed: true,
-                encrypt: false
-            });
+            const email = this.getEmail();
 
-            const password = this.ctx.cookies.get('password', {
-                signed: true,
-                encrypt: true
-            });
+            const password = this.getPassword();
 
-            // if username or password exists in cookies remove them
-            if (username || password) {
+            // if email or password exists in cookies remove them
+            if (email || password) {
                 this.ctx.cookies.set('username', null);
                 this.ctx.cookies.set('password', null);
             }

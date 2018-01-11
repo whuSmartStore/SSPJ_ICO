@@ -4,7 +4,7 @@ module.exports = app => {
 
     app.get('/api/v1/users/index', 'users.index');
 
-    app.redirect('/', '/public/register.html', 302);
+    app.redirect('/', '/public/home.html', 302);
     
     app.get('/api/v1/users/exists/:username', 'users.exists');
     

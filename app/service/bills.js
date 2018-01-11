@@ -48,11 +48,38 @@ module.exports = app => {
         }
 
 
+        // Query the transaction info
+        async query(attributes, wheres) {
+
+            // format bills attributes to table bills
+            bill = this._formatTableValue(this.table, bill);
+
+            // query condition includes id or TXHash
+            if (bill.id || bill.TXHash) {
+                try {
+                    const bill = await this._query('bills', attributes, wheres);
+                    return bill[0] || {};
+                } catch (err) {
+                    this.logger.error(err);
+                    return {};
+                }
+            }
+
+            try {
+                // query condition doesn't includes id and TXHash
+                const bills = await this._query('bills', attributes, wheres);
+                return bills;
+            } catch (err) {
+                return [];
+            }
+        }
+
+
         // Insert a bill record to table bills
         async insert(bill) {
         
             // format bill attributes to table structure
-            bill = this.formatTableValue(this.table, bill);
+            bill = this._formatTableValue(this.table, bill);
             bill.createAt = Date.parse(new Date());        
 
             // user's email and transaction code doesn't exist
