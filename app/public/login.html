@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>登录</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="bootstrap-3.3.7-dist/css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/login.css">
+</head>
+<body>
+	<header>
+		<img id="logo" src="imgs/logo.svg" />
+		<p>微晟防损后台管理系统</p>
+	</header>
+	<form id="form" method="post" action="" onsubmit="signIn('/api/v1/users/sign/signIn/default?_csrf=')">
+		<input type="text" name="email" placeholder="请输入用户名"><br/>
+		<input type="password" name="password" placeholder="请输入密码"><br/>
+		<input type="submit"  value="登录" class="submit">
+		<input type="button"  value="注册" class="submit" id="register">
+	</form>
+	<!-- user :(1-5) ;password : wesine027 -->
+	<script type="text/javascript" src="bootstrap-3.3.7-dist/jquery/jquery.min.js"></script>
+	<script src="js/libs/js.cookie.min.js"></script>
+	<script type="text/javascript" src="js/func.js"></script>
+	<script>
+		window.onload = function(){
+			$('#register').click(function(){
+				window.location = 'register.html';
+			})
+		}
+	</script>
+</body>
+</html>
