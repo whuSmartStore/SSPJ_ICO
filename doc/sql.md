@@ -9,6 +9,8 @@ CREATE TABLE public.users
     firstName varchar(50),
     lastName varchar(50),
     address varchar(50),
+    invested bigint default 0,
+    bunos bigint default 0,
     sspj bigint default 0,
     ethAddress varchar(50),
     ethAddressModifiable boolean default true,
@@ -59,7 +61,8 @@ CREATE TABLE public.bills
     type varchar(50) default 'Token Bought',
     sspj bigint,
     TXHash varchar(200),
-    createAt bigint
+    createAt bigint,
+    block bigint
 ) 
 WITH (
   OIDS = FALSE

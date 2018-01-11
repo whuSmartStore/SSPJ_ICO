@@ -4,7 +4,25 @@ module.exports = appInfo => {
 
     const config = {
 
-        middleware: ['response', 'validate'],
+        middleware: ['recognize', 'validate', 'response'],
+
+        recognize: {
+            match(ctx) {
+
+                // get request url
+                let flag = false;
+                const url = ctx.request.url;
+
+                // judge weather url is /public/login.html, /public/register.html
+                if (url === '/public/login.html' || 
+                    url === '/public/register.html' ||
+                    url === '/') {
+                    return true;
+                }
+
+                return false;
+            }
+        },
 
         validate: {
             ignore(ctx) {
