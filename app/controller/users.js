@@ -59,7 +59,7 @@ module.exports = app => {
         // Active account(through validate email)
         async sendEmail(email) {
             const token = this.service.crypto.encrypto(email);
-            const url = `/api/v1/users/sign/auth/validateEmail?token=${token}`;
+            const url = `http://121.201.13.217/27002/api/v1/users/sign/auth/validateEmail?token=${token}`;
             await this.service.email.activeAccount(email, url);
         }
 
@@ -146,7 +146,7 @@ module.exports = app => {
         // Redirect to password reset page
         async getresetPWPage() {
             const token = this.ctx.query.token;
-            this.ctx.redirect(`/public/resetPW.html?token=${token}`);
+            this.ctx.redirect(`http://121.201.13.217/27002/public/resetPW.html?token=${token}`);
         }
 
 

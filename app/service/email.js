@@ -60,13 +60,13 @@ module.exports = app => {
 
         // Active account link email
         async activeAccount(investor, url) {
-            const page = `${url}`;
+            const page = `<a href="${url}">active account</a>`;
             return await this.send(investor, page);
         }
 
         // Reset password link email
         async resetPassword(investor, url) {
-            const page = `${url}`;
+            const page = `<a href="${url}">reset password</a>`;
             return await this.send(investor, page);
         }
     }
