@@ -11,12 +11,16 @@
 		<img id="logo" src="imgs/logo.svg" />
 		<p>微晟防损后台管理系统</p>
 	</header>
-	<form id="form" method="post" action="" onsubmit="signIn('/api/v1/users/sign/register?_csrf=')">
-		<input type="text" name="email" placeholder="请输入用户名"><br/>
-        <input type="password" name="password" placeholder="请输入密码" id="password1"><br/>
+	<form id="form">
+		<input type="text" name="email" id="email" placeholder="请输入用户名"><br/>
+        <input type="password" name="password"  placeholder="请输入密码" id="password1"><br/>
         <input type="password" placeholder="请重复输入一遍" id="password2"><br/>
-		<input type="submit"  value="注册" class="submit" disabled='' id="submit">
+		<input type="button"  value="注册" class="submit" disabled='' id="submit"><br>
 	</form>
+
+
+	<a href="login.html" class="submit">已有账户登录</a><br>
+	<a href="http://llemily.github.io" style="display:none" class="submit" id="jumptEmail">去邮箱验证吧</a>
 	<!-- user :(1-5) ;password : wesine027 -->
 	<script type="text/javascript" src="bootstrap-3.3.7-dist/jquery/jquery.min.js"></script>
 	<script src="js/libs/js.cookie.min.js"></script>
@@ -29,7 +33,27 @@
                 }else{
                     $('#submit').attr('disabled','');
                 }
-            });
+			});
+			$('#submit').click(function(){
+				$.ajax({
+					url:'/api/v1/users/sign/register',
+					type:'post',
+					data:{
+						email : $('#email').val(),
+						password : $('#password1').val()
+					},
+					success:function(results){
+						if(results.code > 400){
+							alert(results.message);
+						}else{
+							alert(results.data.info);
+							$('#jumptEmail').css('display','');
+						}
+						
+					}	
+				})
+			})
+
         }
     
     </script>
