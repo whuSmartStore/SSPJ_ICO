@@ -55,7 +55,7 @@ module.exports = appInfo => {
             },
         },
         
-        keys: appInfo.name + Date.parse(new Date()),
+        keys: appInfo.name + 'sspj_ico_0001',
 
         security: {
             csrf: false
