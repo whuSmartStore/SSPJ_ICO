@@ -4,7 +4,7 @@ module.exports = appInfo => {
 
     const config = {
 
-        middleware: ['validate', ],
+        middleware: ['response', 'validate'],
 
         validate: {
             ignore(ctx) {
