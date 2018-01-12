@@ -1,6 +1,6 @@
 
 
-module.exports = (options, app) => {
+module.exports = options => {
 
     return async (ctx, next) => {
 

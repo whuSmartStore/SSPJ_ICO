@@ -110,12 +110,6 @@ module.exports = app => {
         // Register a new user
         async register() {
 
-            // redirect to ico dashbord directly when cookie record exists
-            if (await this.cookiesSetted()) {
-                this.ctx.redirect('/public/ico/dashbord.html');
-                return;
-            }
-
             const user = this.ctx.request.body;
 
             // user's email and password doesn't exist
@@ -201,13 +195,7 @@ module.exports = app => {
         
         // User logIn through default way
         async signIn() {
-            
-            // redirect to ico dashbord directly when cookie record exists
-            if (await this.cookiesSetted()) {
-                this.ctx.redirect('/public/ico/dashbord.html');
-                return;
-            }
-            
+
             // user logIn in common path
             const user = this.ctx.request.body;
 
