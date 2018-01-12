@@ -4,7 +4,7 @@ module.exports = appInfo => {
 
     const config = {
 
-        middleware: ['recognize', 'validate', 'response'],
+        middleware: ['recognize', 'referralMonitor', 'validate', 'response'],
 
         recognize: {
             match(ctx) {
@@ -23,6 +23,21 @@ module.exports = appInfo => {
                 return false;
             }
         },
+
+        // referralMonitor: {
+            // match(ctx) {
+
+            //     const url = ctx.request.url;
+
+            //     // middleware referralMonitor just match request url '/'
+            //     if (url === '/') {
+            //         return true;
+            //     }
+
+            //     return false;
+            // }
+        //     match: '/'
+        // },
 
         validate: {
             ignore(ctx) {

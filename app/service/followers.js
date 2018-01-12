@@ -56,13 +56,13 @@ module.exports = app => {
             }
 
             // user doesn't register
-            const user = new Users();
-            if (!user.exists(follower.email)) {
+            const users = new Users();
+            if (!users.exists(follower.email)) {
                 return false;
             }
 
             // token doesn't exist in table users
-            if(!user.tokenExists(follower.token)) {
+            if(!users.tokenExists(follower.token)) {
                 return false;
             }
 
@@ -78,6 +78,31 @@ module.exports = app => {
             } catch (err) {
                 this.logger.error(err);
                 return false;
+            }
+        }
+
+
+        // Get some investor's followers
+        async getMyFollowers(email) {
+            const users = new Users();
+            const token = await users.query(['token'], { email }).token;
+
+            // can not get investor's dtoken
+            if (!token) {
+                return [];
+            }
+
+            // Get investor's follower email array
+            try {
+                const followers = await this._query('followers', ['email'], { token });
+                const follarr = [];
+                followers.map(follower => {
+                    follarr.push(follower.email);
+                });
+                return follarr;
+            } catch (err) {
+                this.logger.error(err);
+                return [];
             }
         }
     }
