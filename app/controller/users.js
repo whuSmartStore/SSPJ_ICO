@@ -67,7 +67,7 @@ module.exports = app => {
         // Resend email when user forget auth
         async resendEmailAuth() {
             
-            const email = this.ctx.request.body.email;
+            let email = this.ctx.request.body.email;
             
             // user doesn't exist(email doesn't exists in table users)
             if (this.service.users.exists(email)) {
@@ -75,7 +75,7 @@ module.exports = app => {
                 return;
             }
 
-            const email = await this.sendEmail(email);
+            email = await this.sendEmail(email);
             if (!email.send) {
                 this.response(400, 'Email send failed');
                 return;
