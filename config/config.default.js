@@ -13,12 +13,10 @@ module.exports = appInfo => {
                 let flag = false;
                 const url = ctx.request.url;
 
-                console.log(url);
                 // judge whether url is /public/login.html, /public/register.html, / or not
                 if (url === '/public/login.html' || 
                     url === '/public/register.html' ||
                     url === '/') {
-                    console.log('test:' + url);
                     return true;
                 }
 
