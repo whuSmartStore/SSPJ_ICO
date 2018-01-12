@@ -24,20 +24,19 @@ module.exports = appInfo => {
             }
         },
 
-        // referralMonitor: {
-            // match(ctx) {
+        referralMonitor: {
+            match(ctx) {
 
-            //     const url = ctx.request.url;
+                const url = ctx.request.url;
 
-            //     // middleware referralMonitor just match request url '/'
-            //     if (url === '/') {
-            //         return true;
-            //     }
+                // middleware referralMonitor just match request url '/'
+                if (url === '/') {
+                    return true;
+                }
 
-            //     return false;
-            // }
-        //     match: '/'
-        // },
+                return false;
+            }
+        },
 
         validate: {
             ignore(ctx) {
