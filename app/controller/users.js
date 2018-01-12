@@ -59,7 +59,7 @@ module.exports = app => {
         // Active account(through validate email)
         async sendEmail(email) {
             const token = this.service.crypto.encrypto(email);
-            const url = `${this.config.dns.host}:${this.config.dns.port}/api/v1/users/sign/auth/validateEmail?token=${token}`;
+            const url = `http://${this.config.dns.host}:${this.config.dns.port}/api/v1/users/sign/auth/validateEmail?token=${token}`;
             await this.service.email.activeAccount(email, url);
         }
 
@@ -151,7 +151,7 @@ module.exports = app => {
         // Redirect to password reset page
         async getresetPWPage() {
             const token = this.ctx.query.token;
-            this.ctx.redirect(`http://121.201.13.217/27002/public/resetPW.html?token=${token}`);
+            this.ctx.redirect(`http://${this.config.dns.host}:${this.config.dns.port}/public/resetPW.html?token=${token}`);
         }
 
 
@@ -224,7 +224,7 @@ module.exports = app => {
             // redirect to activeAccount page when account hasn't been actived
             const auth = await this.service.users.query(['auth'], { email: user.email });
             if (auth === '{}' || !auth.auth) {
-                this.ctx.redirect(`/public/activeAccount.html?email=${user.email}`);
+                this.response(403, `account haven't been activated, please click the active link to redirect active account page`);
                 return;
             }
 

@@ -33,8 +33,8 @@ module.exports = app => {
         // Set email to cookie
         setEmail(email) {
             this.ctx.cookies.set('username', email, {
-                maxAge: 1000 * 60 * 60 * 24 * 3,
-                expires: 1000 * 60 * 60 * 24 * 3,
+                maxAge: 1000 * 60 * 60,
+                expires: 1000 * 60 * 60,
                 path: '/',
                 signed: true,
                 encrypt: false
@@ -45,8 +45,8 @@ module.exports = app => {
         // Set password to cookie
         setPassword(password) {
             this.ctx.cookies.set('password', password, {
-                maxAge: 1000 * 60 * 60 * 3,
-                expires: 1000 * 60 * 60 * 3,
+                maxAge: 1000 * 60 * 60,
+                expires: 1000 * 60 * 60,
                 path:'/',
                 signed: true,
                 encrypt: true
