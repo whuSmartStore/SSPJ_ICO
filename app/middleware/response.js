@@ -6,6 +6,8 @@ module.exports = options => {
         
         ctx.set('Cache-Control', 'no-cache');
 
+        console.log(ctx.request.url);
+
         await next();
     }
 }
