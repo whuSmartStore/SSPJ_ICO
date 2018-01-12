@@ -136,6 +136,12 @@ module.exports = app => {
                 return;
             }
 
+            // Judge if the investor referraled by some other
+            const referral = this.getToken();
+            if (referral) {
+                await this.service.followers.insert({ token: referral, email: user.email });
+            }
+
             // active account(through validate email) and redirect to login page
             await this.sendEmail(user.email);
             this.response(203, 'Email has beed sent, please check you email and click active link to active account');
