@@ -22,5 +22,11 @@ module.exports = appInfo => {
         poolSize: 5
     };
 
+    config.dns = {
+        host: '121.201.13.217',
+        port: '27002',
+        domain: ''
+    };
+
     return config;
 }

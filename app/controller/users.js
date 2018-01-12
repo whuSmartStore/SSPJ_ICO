@@ -59,7 +59,7 @@ module.exports = app => {
         // Active account(through validate email)
         async sendEmail(email) {
             const token = this.service.crypto.encrypto(email);
-            const url = `http://121.201.13.217/27002/api/v1/users/sign/auth/validateEmail?token=${token}`;
+            const url = `${this.config.dns.host}:${this.config.dns.port}/api/v1/users/sign/auth/validateEmail?token=${token}`;
             await this.service.email.activeAccount(email, url);
         }
 
@@ -75,7 +75,12 @@ module.exports = app => {
                 return;
             }
 
-            await this.sendEmail(email);
+            const email = await this.sendEmail(email);
+            if (!email.send) {
+                this.response(400, 'Email send failed');
+                return;
+            }
+
             this.response(203, `please check your email(${email} to active your account`);
         }
 
