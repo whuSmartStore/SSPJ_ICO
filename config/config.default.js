@@ -4,7 +4,7 @@ module.exports = appInfo => {
 
     const config = {
 
-        middleware: ['recognize', 'referralMonitor', 'validate', 'response'],
+        middleware: ['response', 'recognize', 'referralMonitor', 'validate'],
 
         recognize: {
             match(ctx) {
