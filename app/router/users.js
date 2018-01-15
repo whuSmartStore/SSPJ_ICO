@@ -12,7 +12,7 @@ module.exports = app => {
     app.get('/api/v1/users/info/sspj', 'users.getSSPJ');
     app.put('/api/v1/users/info/userInfo', 'users.modifyUserInfo');
 
-    app.put('/api/v1/users/sign/auth/validateEmail', 'users.validateEmail'); // ?token=:string
+    app.get('/api/v1/users/sign/auth/validateEmail', 'users.validateEmail'); // ?token=:string
     app.post('/api/v1/users/sign/auth/activeAccount', 'users.resendEmailAuth');
 
     app.post('/api/v1/users/sign/register', 'users.register');
@@ -36,13 +36,6 @@ module.exports = app => {
 //     lastName,
 //     address,
 //     ethAddress
-// }
-
-
-
-// app.put('/api/v1/users/sign/auth/validateEmail', 'users.validateEmail'); // ?token=:string
-// {
-
 // }
 
 

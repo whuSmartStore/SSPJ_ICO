@@ -7,7 +7,7 @@ module.exports = appInfo => {
         cluster: {
             listen: {
                 path: '',
-                port: 7002,
+                port: 7003,
                 hostname: '',
             }
         }
@@ -20,6 +20,12 @@ module.exports = appInfo => {
         host: '127.0.0.1',
         port: '5432',
         poolSize: 5
+    };
+
+    config.dns = {
+        host: '121.201.13.217',
+        port: '27002',
+        domain: ''
     };
 
     return config;
