@@ -24,7 +24,7 @@ module.exports = appInfo => {
 
     config.dns = {
         host: '121.201.13.217',
-        port: '27002',
+        port: '27003',
         domain: ''
     };
 
