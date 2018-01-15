@@ -91,6 +91,8 @@ module.exports = app => {
             const token = this.ctx.query.token;
             const email = this.service.crypto.decrypto(token);
 
+            console.log(token);
+
             // token error
             if (!await this.service.users.exists(email)) {
                 this.response(403, 'token error');
