@@ -15,6 +15,8 @@ module.exports = app => {
                     firstName: undefined,
                     lastName: undefined,
                     address: undefined,
+                    invested: undefined,
+                    bonus: undefined,
                     sspj: undefined,
                     ethAddress: undefined,
                     ethAddressModifiable: undefined,

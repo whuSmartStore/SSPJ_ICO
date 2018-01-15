@@ -89,6 +89,15 @@ module.exports = app => {
         async validateEmail() {
             
             const token = this.ctx.query.token;
+            
+
+            // validate length of token right or not
+            const tokLen = token.toString().length;
+            if (tokLen !== 32 && tokLen !== 64 && token !== 128 && token !== 256) {
+                this.response(403, 'token error');
+                return;
+            }
+
             const email = this.service.crypto.decrypto(token);
 
             // token error
@@ -160,6 +169,14 @@ module.exports = app => {
 
             let password = this.ctx.request.body.password;
             const token = this.ctx.query.token;
+
+            // validate token is right or not
+            const tokLen = token.toString().length;
+            if (tokLen !== 32 && tokLen !== 64 && token !== 128 && token !== 256) {
+                this.response(403, 'token error');
+                return;
+            }
+
             const email = this.service.crypto.decrypto(token);
             
             // Token error
@@ -246,7 +263,7 @@ module.exports = app => {
             }
 
             // user logIn with google account
-            this.response(200, 'waited to complete');  //-------------------------
+            this.response(200, 'waited to complete');
         }
 
 
@@ -260,7 +277,7 @@ module.exports = app => {
             }
 
             // user logIn with google account
-            this.response(200, 'waited to complete'); //----------------------------
+            this.response(200, 'waited to complete');
         }
 
 

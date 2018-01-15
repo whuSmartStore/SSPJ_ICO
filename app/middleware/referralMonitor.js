@@ -13,9 +13,6 @@ module.exports = options => {
             base.setToken(ref_id);
         }
 
-        console.log(ref_id);
-        console.log(ctx.request.url);
-
         await next();
     }
 }
