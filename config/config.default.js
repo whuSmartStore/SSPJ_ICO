@@ -162,10 +162,22 @@ module.exports = appInfo => {
         SSPJ: ['Sales Volume on Main Sale', 41333292],
         softCap: ['Soft-cap on Main Sale', '$ 12253000'],
         hardCap: ['Hard-cap on Main Sale', '8267 ETH'],
-        salePrice: ['Main Sale price', '1 ETH = 5000 SSPJ(1 SSPJ = 0.0002 ETH)'],
+        salePrice: ['Main Sale price', 5000],
         minPurchase: ['Minimum Purchase Transaction Sum', 0.01],
         maxPurchase: ['Maximum Purchase Transaction Sum', 'unlimited'],
-    }
+    };
+
+    config.address = {
+        eth: '0xe13cCeb9B98228d8434439E9F828B7906Ae9CF41',
+        btc: '',
+        ltc: ''
+    };
+
+    config.token = {
+        eth: 'N64H9R6X9XBE57USYIFFKYM649A33AEJRM',
+        btc: '',
+        ltc: ''
+    };
 
     return config;
 }

@@ -10,7 +10,7 @@ CREATE TABLE public.users
     lastName varchar(50),
     address varchar(50),
     invested bigint default 0,
-    bunos bigint default 0,
+    bonus bigint default 0,
     sspj bigint default 0,
     ethAddress varchar(50),
     ethAddressModifiable boolean default true,

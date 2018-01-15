@@ -105,6 +105,24 @@ module.exports = app => {
                 return [];
             }
         }
+
+
+        // Get some investor's introducer
+        async getIntroducer(email) {
+            try {
+                const referral = await this._query('followers', ['token'], { email })[0].token || false;
+                if (!referral) {
+                    return false;
+                }
+
+                const users = new Users();
+                const refEmail = await users._query(['email'], { token })[0].email || false;
+                return refEmail;
+            } catch (err) {
+                this.logger.error(`get referral failed of  ${email}`);
+                return false;
+            }
+        }
     }
 
     return Followers;
