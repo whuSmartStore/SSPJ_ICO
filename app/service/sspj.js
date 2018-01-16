@@ -6,7 +6,7 @@ module.exports = app => {
 
     class SSPJ extends Base {
 
-        // COnstructure of table sspj
+        // Constructure of table sspj
         get table() {
             if (!this[Table]) {
                 this[Table] = {
@@ -126,6 +126,110 @@ module.exports = app => {
             if (timestamp >= this.config.bonuses[len -1].time) {
                 return this.config.bonuses[len - 1].bonus;
             }
+        }
+
+        async ethTask() {
+            let url = `https://api.etherscan.io/api?module=account&action=txlist&`;
+            url += `address=${this.config.address.eth}&`;
+            url += `startblock=0&`;
+            url += `endblock=99999999&`;
+            url += `sort=asc&`;
+            url += `apikey=${this.config.token.eth}`;
+            
+            const request = await this.ctx.curl(url, {
+                dataType: 'json',
+                timeout: 500000
+            });
+
+            const transactions = request.data.result;
+
+            for (const transaction of transactions) {
+
+                /* bills table */
+                // Transacion exists in app.cache
+                if (this.app.ethTXHash[transaction.hash]) {
+                    continue;
+                }
+
+                // Judge email exists or not
+                let email = await this.service.users.query(['email'], { ethAddress: transaction.from });
+                email = email[0] && email[0].email || undefined;
+                if (!email) {
+                    continue;
+                }
+
+                const ethTransaction = {};
+                ethTransaction.email = email;
+                ethTransaction.paid = transaction.value / 1000000000000000000 || 0;
+                ethTransaction.payType = 'ETH';
+                ethTransaction.sspj = ethTransaction.paid * this.config.icoInfo.salePrice[1] * 
+                    (1 + this.getBonusRate(Date.parse(new Date())));
+                ethTransaction.TXHash = transaction.hash;
+                ethTransaction.createAt = Date.parse(new Date());
+                ethTransaction.block = transaction.blockNumber;
+                
+                // Transaction exists in table bills
+                if (await this.service.bills.exists(ethTransaction.TXHash)) {
+                    this.logger.info(`${ethTransaction.TXHash} exists in table bills`);
+                    continue;
+                }
+
+                // Transaction does not exit in table bills
+                if (!await this.service.bills.insert(ethTransaction)) {
+                    this.logger.error(`${ethTransaction.TXHash} record log failed`);
+                }
+
+                // Tranaction does not exists in table bills and set it to the cache
+                this.app.ethTXHash[transaction.hash] = true;
+
+                
+                /* users table invested */
+                // update investor's invested and sspj
+                let invested = await this.service.users.query(['invested'], { email });
+                let sspj = await this.service.users.query(['sspj'], { email });
+                invested = +invested.invested || 0;
+                sspj = +sspj.sspj || 0;
+                invested += ethTransaction.sspj;
+                sspj += ethTransaction.sspj;
+                if (!await this.service.users.update({ invested, sspj }, { email })) {
+                    this.logger.error(`${email}'s invested and sspj update failed`);
+                }
+
+
+                /* table sspj */
+                await this.sub(ethTransaction.sspj, 'investor');
+                await this.sub(ethTransaction.sspj * 0.05, 'bonuses');
+
+
+                /* users table bonus */
+                const referral = await this.service.followers.getIntroducer(email);
+
+                // investor doesn't have introducer
+                if (!referral) {
+                    continue;
+                }
+
+                // update investor's indroducer's bonus and sspj
+                let bonus = await this.service.users.query(['bonus'], { email: referral });
+                bonus = +bonus.bonus || 0; 
+                sspj = await this.service.users.query(['sspj'], { email: referral });
+                sspj = sspj.sspj || 0;               
+                bonus += ethTransaction.paid * 0.05;
+                sspj += ethTransaction.paid * 0.05;
+                if (!await this.service.users.update({ bonus, sspj }, { email: referral })) {
+                    this.logger.error(`${referral}'s bonus and sspj update failed`);
+                }
+            }
+        }
+
+
+        async btcTask() {
+
+        }
+
+
+        async ltcTask() {
+            
         }
     }
 
