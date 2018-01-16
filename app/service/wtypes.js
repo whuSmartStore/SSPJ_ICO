@@ -93,7 +93,7 @@ module.exports = app => {
             }
 
             // wtype record doesn't exist
-            if (!await this.exists(type)) {
+            if (!await this.exists(wheres.type)) {
                 return false;
             }
 

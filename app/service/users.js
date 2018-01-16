@@ -145,6 +145,11 @@ module.exports = app => {
                 return false;
             }
 
+            // user doesn't exist in table users
+            if (!await this.exists(wheres.email)) {
+                return false;
+            }
+
             // update user's info
             try {
                 await this._update('users', user, wheres);

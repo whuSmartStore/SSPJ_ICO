@@ -81,6 +81,11 @@ module.exports = app => {
                 return false;
             }
 
+            // wallet doesn't exist in table wallets
+            if (await this.exists(wheres.address)) {
+                return false;
+            }
+
             // delete all wallets satisfied the condition
             try {
                 await this._delete('wallets', wheres);

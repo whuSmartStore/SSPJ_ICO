@@ -44,7 +44,8 @@ module.exports = app => {
                 ethTransaction.email = email;
                 ethTransaction.paid = transaction.value / 1000000000000000000 || 0;
                 ethTransaction.payType = 'ETH';
-                ethTransaction.sspj = ethTransaction.paid * ctx.app.config.icoInfo.salePrice[1];
+                ethTransaction.sspj = ethTransaction.paid * ctx.app.config.icoInfo.salePrice[1] * 
+                    (1 + ctx.service.sspj.getBonusRate(Date.parse(new Date())));
                 ethTransaction.TXHash = transaction.hash;
                 ethTransaction.createAt = Date.parse(new Date());
                 ethTransaction.block = transaction.blockNumber;
@@ -78,9 +79,9 @@ module.exports = app => {
 
 
                 /* table sspj */
-                await ctx.service.sspj.sub(invested, 'investor');
-                await ctx.service.sspj.sub(invested * 0.05, 'bonuses');
-                
+                await ctx.service.sspj.sub(ethTransaction.sspj, 'investor');
+                await ctx.service.sspj.sub(ethTransaction.sspj * 0.05, 'bonuses');
+
 
                 /* users table bonus */
                 const referral = await ctx.service.followers.getIntroducer(email);

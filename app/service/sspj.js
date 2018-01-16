@@ -11,8 +11,9 @@ module.exports = app => {
             if (!this[Table]) {
                 this[Table] = {
                     id: undefined,
+                    type: undefined,
                     usage: undefined,
-                    total: undefiend,
+                    total: undefined,
                     amount: undefined,
                     rate: undefined,
                     remain: undefined
@@ -51,14 +52,15 @@ module.exports = app => {
 
             // format sspj's attributes to table sspj
             sspj = this._formatTableValue(this.table, sspj);
+            wheres = this._formatTableValue(this.table, wheres);
 
-            // sspj's type doesn't exist
-            if (!sspj.type) {
+            // wheres's type doesn't exist
+            if (!wheres.type) {
                 return false;
             }
 
-            // sspj has existed
-            if (!await this.exists(sspj.type)) {
+            // sspj record doesn't exist
+            if (!await this.exists(wheres.type)) {
                 return false;
             }
 
@@ -74,10 +76,10 @@ module.exports = app => {
 
 
         // Get some sspj specified by usage remain amount
-        async getLeft(usage) {
+        async getLeft(type) {
 
             try {
-                const sspj = await this._query('sspj', ['remain'], { usage });
+                const sspj = await this._query('sspj', ['remain'], { type });
                 return sspj[0] && +sspj[0].remain || 0;
             } catch (err) {
                 this.logger.error(err);
@@ -87,9 +89,9 @@ module.exports = app => {
 
 
         // Subtract the amount of some sspj specified by type with some number
-        async sub(amount, usage) {
+        async sub(amount, type) {
             
-            let left = this.getLeft(usage);
+            let left = await this.getLeft(type);
 
             // sspjs left amount is inadequate
             if (left < amount) {
@@ -98,7 +100,7 @@ module.exports = app => {
 
             try {
                 left -= amount;
-                if (!await this.update({ remain: left }, { usage })) {
+                if (!await this.update({ remain: left }, { type })) {
                     return false;
                 }
 
@@ -116,9 +118,7 @@ module.exports = app => {
             const len = this.config.bonuses.length;
 
             for (let i = 0; i < len - 2; i++) {
-                console.log(i);
                 if (timestamp < this.config.bonuses[i + 1].time) {
-                    console.log(this.config.bonuses[i].bonus);
                     return this.config.bonuses[i].bonus;
                 }
             }

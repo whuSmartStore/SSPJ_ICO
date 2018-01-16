@@ -81,7 +81,6 @@ module.exports = app => {
         
             // format bill attributes to table structure
             bill = this._formatTableValue(this.table, bill);
-            bill.createAt = Date.parse(new Date());
 
             // user's email and transaction code doesn't exist
             if (!bill.email || !bill.TXHash) {

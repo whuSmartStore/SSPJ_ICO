@@ -103,7 +103,7 @@ module.exports = app => {
                 return follarr;
             } catch (err) {
                 this.logger.error(err);
-                return [];
+                return false;
             }
         }
 

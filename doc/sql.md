@@ -142,6 +142,7 @@ ALTER TABLE public.wtypes
 CREATE TABLE public.sspj
 (
     id serial primary key,
+    type varchar(50),
     usage varchar(50),
     total numeric(13, 4),
     amount numeric(13, 4),
