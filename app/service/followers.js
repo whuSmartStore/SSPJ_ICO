@@ -85,11 +85,12 @@ module.exports = app => {
         // Get some investor's followers
         async getMyFollowers(email) {
             const users = new Users();
-            const token = await users.query(['token'], { email }).token;
+            let token = await users.query(['token'], { email });
+            token = token.token || false;
 
             // can not get investor's dtoken
             if (!token) {
-                return [];
+                return false;
             }
 
             // Get investor's follower email array
@@ -102,7 +103,7 @@ module.exports = app => {
                 return follarr;
             } catch (err) {
                 this.logger.error(err);
-                return [];
+                return false;
             }
         }
 
@@ -110,16 +111,17 @@ module.exports = app => {
         // Get some investor's introducer
         async getIntroducer(email) {
             try {
-                const referral = await this._query('followers', ['token'], { email })[0].token || false;
+                let referral = await this._query('followers', ['token'], { email });
+                referral = referral[0] && referral[0].token || false;
                 if (!referral) {
                     return false;
                 }
 
                 const users = new Users();
-                const refEmail = await users._query(['email'], { token })[0].email || false;
-                return refEmail;
+                const refEmail = await users._query(['email'], { token });
+                return refEmail[0] && refEmail[0].email || false;
             } catch (err) {
-                this.logger.error(`get referral failed of  ${email}`);
+                this.logger.error(`get referral failed of ${email}`);
                 return false;
             }
         }

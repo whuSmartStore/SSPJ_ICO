@@ -18,6 +18,7 @@ module.exports = app => {
                     sspj: undefined,
                     createAt: undefined,
                     TXHash: undefined,
+                    block: undefined
                 }
             }
 
@@ -80,10 +81,9 @@ module.exports = app => {
         
             // format bill attributes to table structure
             bill = this._formatTableValue(this.table, bill);
-            bill.createAt = Date.parse(new Date());        
 
             // user's email and transaction code doesn't exist
-            if (!email || !TXHash) {
+            if (!bill.email || !bill.TXHash) {
                 return false;
             }
 
