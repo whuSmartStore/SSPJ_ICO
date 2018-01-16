@@ -100,67 +100,49 @@ module.exports = appInfo => {
         },
     }
 
-    config.db = {
-        user: 'sspj_ico',
-        password: 'sspj_ico_11',
-        database: 'sspj_ico',
-        host: '121.201.13.217',
-        port: '25432',
-        poolSize: 50
-    }
-
-    config.bunoses = [
+    config.bonuses = [
         {
             time: 1515559629000,
-            buons: 0.2,
-            amount: 13777764
+            bonus: 0.2
         },
         {
             time: 1515559659000,
-            buons: 0.15,
-            amount: 13777764
+            bonus: 0.15
         },
         {
             time: 1515559684000,
-            buons: 0.13,
-            amount: 13777764
+            bonus: 0.13
         },
         {
             time: 1515559707000,
-            buons: 0.11,
-            amount: 13777764
+            bonus: 0.11
         },
         {
             time: 1515559720000,
-            buons: 0.09,
-            amount: 13777764
+            bonus: 0.09
         },
         {
             time: 1515559738000,
-            buons: 0.07,
-            amount: 13777764
+            bonus: 0.07
         },
         {
             time: 1515559756000,
-            buons: 0.05,
-            amount: 13777764
+            bonus: 0.05
         },
         {
             time: 1515559773000,
-            buons: 0.03,
-            amount: 13777764
+            bonus: 0.03
         },
         {
             time: 1515559787000,
-            buons: 0,
-            amount: 27555528
+            bonus: 0
         }
     ];
 
     config.icoInfo = {
         duration: ['Main Sale', '2017-6-1 2017-10-1'],
         SSPJ: ['Sales Volume on Main Sale', 41333292],
-        softCap: ['Soft-cap on Main Sale', '$ 12253000'],
+        softCap: ['Soft-cap on Main Sale', '121021 ETH'],
         hardCap: ['Hard-cap on Main Sale', '8267 ETH'],
         salePrice: ['Main Sale price', 5000],
         minPurchase: ['Minimum Purchase Transaction Sum', 0.01],

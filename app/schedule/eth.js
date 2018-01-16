@@ -6,7 +6,8 @@ module.exports = app => {
         schedule: {
             interval: '10s',
             type: 'all',
-            immediate: true
+            immediate: true,
+            disable: false
         },
 
         async task(ctx) {
@@ -28,36 +29,35 @@ module.exports = app => {
                 
                 /* bills table */
                 // Transacion exists in app.cache
-                if (!ctx.app.ethTXHash[transaction.hash]) {
+                if (ctx.app.ethTXHash[transaction.hash]) {
                     continue;
                 }
 
                 // Judge email exists or not
-                const email = await ctx.app.service.users.query(['email'], { ethAddress })[0].email;
-                console.log(email);
+                let email = await ctx.service.users.query(['email'], { ethAddress: transaction.from });
+                email = email[0] && email[0].email || undefined;
                 if (!email) {
-                    return;
+                    continue;
                 }
 
                 const ethTransaction = {};
                 ethTransaction.email = email;
                 ethTransaction.paid = transaction.value / 1000000000000000000 || 0;
-                ethTransaction.type = 'ETH';
-                ethTransaction.sspj = ethTransaction.paid / ctx.app.config.icoInfo.salePrice[1];
-                ethTransaction.txhash = transaction.hash;
+                ethTransaction.payType = 'ETH';
+                ethTransaction.sspj = ethTransaction.paid * ctx.app.config.icoInfo.salePrice[1];
+                ethTransaction.TXHash = transaction.hash;
                 ethTransaction.createAt = Date.parse(new Date());
                 ethTransaction.block = transaction.blockNumber;
-                console.log(ethTransaction);
                 
                 // Transaction exists in table bills
-                if (await ctx.app.service.bills.exists(ethTransaction.txhash)) {
-                    ctx.app.logger.info(`${ethTransaction.txhash} exists in table bills`);
-                    return;
+                if (await ctx.service.bills.exists(ethTransaction.TXHash)) {
+                    ctx.logger.info(`${ethTransaction.TXHash} exists in table bills`);
+                    continue;
                 }
 
                 // Transaction does not exit in table bills
-                if (!await ctx.app.service.bills.insert(ethTransaction)) {
-                    ctx.app.logger.error(`${ethTransaction.txhash} record log failed`);
+                if (!await ctx.service.bills.insert(ethTransaction)) {
+                    ctx.logger.error(`${ethTransaction.TXHash} record log failed`);
                 }
 
                 // Tranaction does not exists in table bills and set it to the cache
@@ -65,28 +65,41 @@ module.exports = app => {
 
                 
                 /* users table invested */
-                let invested = await ctx.app.service.users.query(['invested'], { email }).invested || 0;
-                let sspj = await ctx.app.service.users.query(['sspj'], { email }).sspj || 0;
+                // update investor's invested and sspj
+                let invested = await ctx.service.users.query(['invested'], { email });
+                let sspj = await ctx.service.users.query(['sspj'], { email });
+                invested = +invested.invested || 0;
+                sspj = +sspj.sspj || 0;
                 invested += ethTransaction.sspj;
                 sspj += ethTransaction.sspj;
-                if (!await ctx.app.service.users.update({ invested, sspj }, { email })) {
-                    ctx.app.logger.error(`${email}'s invested and sspj update failed`);
+                if (!await ctx.service.users.update({ invested, sspj }, { email })) {
+                    ctx.logger.error(`${email}'s invested and sspj update failed`);
                 }
-
-                /* users table bonus */
-                const referral = await ctx.app.service.followers.getIntroducer(email);
-                if (!email) {
-                    return;
-                }
-
-                let bonus = await ctx.app.service.users.query(['bonus'], { email: referral }).invested || 0; 
-                sspj = await ctx.app.service.users.query(['sspj'], { email: referral }).sspj || 0;
-                bonus += ethTransaction.paid * 0.05;
-                sspj += ethTransaction.paid * 0.05;
 
 
                 /* table sspj */
+                await ctx.service.sspj.sub(invested, 'investor');
+                await ctx.service.sspj.sub(invested * 0.05, 'bonuses');
+                
 
+                /* users table bonus */
+                const referral = await ctx.service.followers.getIntroducer(email);
+
+                // investor doesn't have introducer
+                if (!referral) {
+                    continue;
+                }
+
+                // update investor's indroducer's bonus and sspj
+                let bonus = await ctx.service.users.query(['bonus'], { email: referral });
+                bonus = +bonus.bonus || 0; 
+                sspj = await ctx.service.users.query(['sspj'], { email: referral });
+                sspj = sspj.sspj || 0;               
+                bonus += ethTransaction.paid * 0.05;
+                sspj += ethTransaction.paid * 0.05;
+                if (!await ctx.service.users.update({ bonus, sspj }, { email: referral })) {
+                    ctx.logger.error(`${referral}'s bonus and sspj update failed`);
+                }
             }
         }
     }

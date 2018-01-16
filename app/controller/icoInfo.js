@@ -8,6 +8,7 @@ module.exports = app => {
 
         // Index test
         async index() {
+            this.service.sspj.getBonusRate(Date.parse(new Date()));
             this.response(200, 'index test successed');
         }
 

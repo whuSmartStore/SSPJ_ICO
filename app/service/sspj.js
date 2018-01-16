@@ -11,9 +11,11 @@ module.exports = app => {
             if (!this[Table]) {
                 this[Table] = {
                     id: undefined,
-                    type: undefined,
+                    usage: undefined,
+                    total: undefiend,
                     amount: undefined,
-                    usage: undefined
+                    rate: undefined,
+                    remain: undefined
                 };
             }
 
@@ -71,12 +73,12 @@ module.exports = app => {
         }
 
 
-        // Query sspj specified by type left amount
-        async getLeft(type) {
+        // Get some sspj specified by usage remain amount
+        async getLeft(usage) {
 
             try {
-                const sspj = await this._query('sspj', ['amount'], { type });
-                return sspj[0] && +sspj[0].amount || 0;
+                const sspj = await this._query('sspj', ['remain'], { usage });
+                return sspj[0] && +sspj[0].remain || 0;
             } catch (err) {
                 this.logger.error(err);
                 return 0;
@@ -85,21 +87,45 @@ module.exports = app => {
 
 
         // Subtract the amount of some sspj specified by type with some number
-        async sub(amount, type) {
+        async sub(amount, usage) {
             
-            let left = this.getLeft(type);
+            let left = this.getLeft(usage);
 
             // sspjs left amount is inadequate
             if (left < amount) {
-                return 'left sspj is inadequate'
+                return false;
             }
 
-            left -= amount;
-            if (!await this.update({ amount: left }, { type })) {
-                return 'left sspj amount update successed';
+            try {
+                left -= amount;
+                if (!await this.update({ remain: left }, { usage })) {
+                    return false;
+                }
+
+                return true;
+            } catch (err) {
+                this.logger.error('update sspj left amount failed');
+                return false;
+            }
+        }
+
+
+        // Get the bonuses rate according to the datatime
+        getBonusRate(timestamp) {
+            
+            const len = this.config.bonuses.length;
+
+            for (let i = 0; i < len - 2; i++) {
+                console.log(i);
+                if (timestamp < this.config.bonuses[i + 1].time) {
+                    console.log(this.config.bonuses[i].bonus);
+                    return this.config.bonuses[i].bonus;
+                }
             }
 
-            return 'left sspj amount update failed';
+            if (timestamp >= this.config.bonuses[len -1].time) {
+                return this.config.bonuses[len - 1].bonus;
+            }
         }
     }
 
