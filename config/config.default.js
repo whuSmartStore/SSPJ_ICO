@@ -151,14 +151,12 @@ module.exports = appInfo => {
 
     config.address = {
         eth: '0xe13cCeb9B98228d8434439E9F828B7906Ae9CF41',
-        btc: '',
-        ltc: ''
+        btc: '1E9Wd2H7ePYGeQk8eQkExvBWSdAgM1zuDA'
     };
 
     config.token = {
         eth: 'N64H9R6X9XBE57USYIFFKYM649A33AEJRM',
-        btc: '',
-        ltc: ''
+        btc: ''
     };
 
     return config;

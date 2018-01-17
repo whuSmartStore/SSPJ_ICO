@@ -136,12 +136,12 @@ module.exports = app => {
             url += `sort=asc&`;
             url += `apikey=${this.config.token.eth}`;
             
-            const request = await this.ctx.curl(url, {
+            const response = await this.ctx.curl(url, {
                 dataType: 'json',
                 timeout: 500000
             });
 
-            const transactions = request.data.result;
+            const transactions = response.data.result;
 
             for (const transaction of transactions) {
 
@@ -224,11 +224,18 @@ module.exports = app => {
 
 
         async btcTask() {
+            
+            let url = `https://blockchain.info/rawaddr/${this.config.address.btc}`;
+            const response = await this.ctx.curl(url, {
+                dataType: 'json',
+                timeout: 1000 * 60
+            });
+            const txs = response.data.txs;
+            
+            if (txs.length === 0) {
+                return;
+            }
 
-        }
-
-
-        async ltcTask() {
             
         }
     }
