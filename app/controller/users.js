@@ -302,7 +302,7 @@ module.exports = app => {
         async ethModifiable() {
             const email = this.getEmail();
             let modifiable = await this.service.users.query(['ethAddressModifiable'], email);
-            modifiable = modifiable.ethAddressModifiable || false;
+            modifiable = modifiable.ethaddressmodifiable || false;
             this.response(200, { modifiable });
         }
 
@@ -311,7 +311,7 @@ module.exports = app => {
         async btcModifiable() {
             const email = this.getEmail();
             let modifiable = await this.service.users.query(['btcAddressModifiable'], email);
-            modifiable = modifiable.btcAddressModifiable || false;
+            modifiable = modifiable.btcaddressmodifiable || false;
             this.response(200, { modifiable });
         }
     }
