@@ -296,6 +296,24 @@ module.exports = app => {
 
             this.ctx.redirect('/public/register.html');
         }
+
+
+        // Confirm eth address modifiable or not
+        async ethModifiable() {
+            const email = this.getEmail();
+            let modifiable = await this.service.users.query(['ethAddressModifiable'], email);
+            modifiable = modifiable.ethAddressModifiable || false;
+            this.response(200, { modifiable });
+        }
+
+
+        // Confirm btc address modifiable or not
+        async btcModifiable() {
+            const email = this.getEmail();
+            let modifiable = await this.service.users.query(['btcAddressModifiable'], email);
+            modifiable = modifiable.btcAddressModifiable || false;
+            this.response(200, { modifiable });
+        }
     }
 
     return User;

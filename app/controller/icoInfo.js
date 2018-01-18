@@ -25,6 +25,19 @@ module.exports = app => {
             const startTime = this.app.config.bunoses[0].time;
             this.response(200, { startTime });
         }
+
+
+        // Get btc price
+        async btcPrice() {
+            const price = await this.service.icoInfo.btcPrice();
+            this.response(200, { price });
+        }
+
+        // Get eth price
+        async ethPrice() {
+            const price = await this.service.icoInfo.ethPrice();
+            this.response(200, { price });
+        }
     }
 
     return IcoInfo;
