@@ -20,6 +20,8 @@ module.exports = app => {
                     sspj: undefined,
                     ethAddress: undefined,
                     ethAddressModifiable: undefined,
+                    btcAddress: undefined,
+                    btcAddressModifiable: undefined,
                     token: undefined,
                     auth: undefined,
                     createAt: undefined

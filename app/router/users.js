@@ -7,6 +7,9 @@ module.exports = app => {
     app.redirect('/', '/public/home.html', 302);
     
     app.get('/api/v1/users/exists/:username', 'users.exists');
+
+    app.get('/api/v1/users/modified/eth', 'users.ethModifiable');
+    app.get('/api/v1/users/modified/btc', 'users.btcModifiable');
     
     app.get('/api/v1/users/info/userInfo', 'users.getUserInfo');
     app.get('/api/v1/users/info/sspj', 'users.getSSPJ');

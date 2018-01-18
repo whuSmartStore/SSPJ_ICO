@@ -128,20 +128,7 @@ module.exports = app => {
             }
         }
 
-        async ethTask() {
-            let url = `https://api.etherscan.io/api?module=account&action=txlist&`;
-            url += `address=${this.config.address.eth}&`;
-            url += `startblock=0&`;
-            url += `endblock=99999999&`;
-            url += `sort=asc&`;
-            url += `apikey=${this.config.token.eth}`;
-            
-            const response = await this.ctx.curl(url, {
-                dataType: 'json',
-                timeout: 500000
-            });
-
-            const transactions = response.data.result;
+        async task(transactions, type) {
 
             for (const transaction of transactions) {
 
@@ -151,32 +138,39 @@ module.exports = app => {
                     continue;
                 }
 
-                // Judge email exists or not
-                let email = await this.service.users.query(['email'], { ethAddress: transaction.from });
-                email = email[0] && email[0].email || undefined;
+                let email;
+                if (type === 'ETH') {
+                    // Judge email exists or not
+                    email = await this.service.users.query(['email'], { ethAddress: transaction.from });
+                } else {
+                    email = await this.service.users.query(['email'], { btcAddress: transaction.from });
+                }
+                    email = email[0] && email[0].email || undefined;
                 if (!email) {
                     continue;
                 }
 
-                const ethTransaction = {};
-                ethTransaction.email = email;
-                ethTransaction.paid = transaction.value / 1000000000000000000 || 0;
-                ethTransaction.payType = 'ETH';
-                ethTransaction.sspj = ethTransaction.paid * this.config.icoInfo.salePrice[1] * 
+                const trans = {};
+                trans.email = email;
+                trans.paid = (type === 'ETH') ? transaction.value / 1000000000000000000 || 0 :
+                    transaction.value / 100000000 || 0; 
+                trans.payType = type;
+                const paid = trans.paid * this.config.icoInfo.salePrice[1] * 
                     (1 + this.getBonusRate(Date.parse(new Date())));
-                ethTransaction.TXHash = transaction.hash;
-                ethTransaction.createAt = Date.parse(new Date());
-                ethTransaction.block = transaction.blockNumber;
+                trans.sspj = (type === 'ETH') ? paid : paid * await this.service.icoInfo.btcEthRate();
+                trans.TXHash = transaction.hash;
+                trans.createAt = Date.parse(new Date());
+                trans.block = transaction.blockNumber;
                 
                 // Transaction exists in table bills
-                if (await this.service.bills.exists(ethTransaction.TXHash)) {
-                    this.logger.info(`${ethTransaction.TXHash} exists in table bills`);
+                if (await this.service.bills.exists(trans.TXHash)) {
+                    this.logger.info(`${trans.TXHash} exists in table bills`);
                     continue;
                 }
 
                 // Transaction does not exit in table bills
-                if (!await this.service.bills.insert(ethTransaction)) {
-                    this.logger.error(`${ethTransaction.TXHash} record log failed`);
+                if (!await this.service.bills.insert(trans)) {
+                    this.logger.error(`${trans.TXHash} record log failed`);
                 }
 
                 // Tranaction does not exists in table bills and set it to the cache
@@ -185,20 +179,28 @@ module.exports = app => {
                 
                 /* users table invested */
                 // update investor's invested and sspj
+                const user = {};
                 let invested = await this.service.users.query(['invested'], { email });
                 let sspj = await this.service.users.query(['sspj'], { email });
                 invested = +invested.invested || 0;
                 sspj = +sspj.sspj || 0;
-                invested += ethTransaction.sspj;
-                sspj += ethTransaction.sspj;
-                if (!await this.service.users.update({ invested, sspj }, { email })) {
+                invested += trans.sspj;
+                sspj += trans.sspj;
+                user.invested = invested;
+                user.sspj = sspj;
+                if (type === 'ETH') {
+                    user.ethAddressModifiable = false;
+                } else {
+                    user.btcAddressModifiable = false;
+                }
+                if (!await this.service.users.update(user, { email })) {
                     this.logger.error(`${email}'s invested and sspj update failed`);
                 }
 
 
                 /* table sspj */
-                await this.sub(ethTransaction.sspj, 'investor');
-                await this.sub(ethTransaction.sspj * 0.05, 'bonuses');
+                await this.sub(trans.sspj, 'investor');
+                await this.sub(trans.sspj * 0.05, 'bonuses');
 
 
                 /* users table bonus */
@@ -214,8 +216,8 @@ module.exports = app => {
                 bonus = +bonus.bonus || 0; 
                 sspj = await this.service.users.query(['sspj'], { email: referral });
                 sspj = sspj.sspj || 0;               
-                bonus += ethTransaction.paid * 0.05;
-                sspj += ethTransaction.paid * 0.05;
+                bonus += trans.paid * 0.05;
+                sspj += trans.paid * 0.05;
                 if (!await this.service.users.update({ bonus, sspj }, { email: referral })) {
                     this.logger.error(`${referral}'s bonus and sspj update failed`);
                 }
@@ -223,20 +225,69 @@ module.exports = app => {
         }
 
 
+        // Schedule task of eth
+        async ethTask() {
+            let url = `https://api.etherscan.io/api?module=account&action=txlist&`;
+            url += `address=${this.config.address.eth}&`;
+            url += `startblock=0&`;
+            url += `endblock=99999999&`;
+            url += `sort=asc&`;
+            url += `apikey=${this.config.token.eth}`;
+            
+            const response = await this.ctx.curl(url, {
+                dataType: 'json',
+                timeout: 500000
+            });
+
+            const transactions = response.data.result;
+            await this.task(transactions, 'ETH');
+        }
+
+
+        // Schedule task of btc
         async btcTask() {
             
+            // request transaction list
             let url = `https://blockchain.info/rawaddr/${this.config.address.btc}`;
-            const response = await this.ctx.curl(url, {
+            const response = await this.ctx.curl('https://chain.api.btc.com/v3/address/1DV2dgMqUqMRY8WouoUy45fM81XBHr88rY/tx', {
                 dataType: 'json',
                 timeout: 1000 * 60
             });
-            const txs = response.data.txs;
-            
+
+            // get txs in transaction list
+            const txs = response.data && response.data.data && response.data.data.list || [];
             if (txs.length === 0) {
                 return;
             }
 
-            
+            // generate transactions task needed
+            const transactions = [];
+            for (const tx of txs) {
+                const transaction = {};
+                transaction.hash = tx.hash;
+                transaction.blockNumber = tx.block_height;
+                
+                // set inputs object whoes key is prev_address and value is pre_value
+                const inputs = {};
+                for (const input of tx.inputs) {
+                    inputs[input.prev_addresses[0]] = { value: input.prev_value };
+                }
+
+                // btc address of all investor
+                const addresses = await this.service.users.query(['btcAddress'], {});
+
+                // confirm the value and btc address of investor
+                for (const address of addresses) {
+                    if (address.btcaddress && inputs[address.btcaddress]) {
+                        transaction.value = inputs[address.btcaddress].value;
+                        transaction.from = address.btcaddress;
+                        transactions.push(transaction);
+                        break;
+                    }
+                }
+            }
+
+            await this.task(transactions, 'BTC');
         }
     }
 
