@@ -3,7 +3,6 @@ const Table = Symbol('Followers#table');
 module.exports = app => {
 
     const Base = require('./base')(app);
-    const Users = require('./users')(app);
 
     class Followers extends Base {
 
@@ -56,18 +55,17 @@ module.exports = app => {
             }
 
             // user doesn't register
-            const users = new Users();
-            if (!users.exists(follower.email)) {
+            if (!this.service.users.exists(follower.email)) {
                 return false;
             }
 
             // token doesn't exist in table users
-            if(!users.tokenExists(follower.token)) {
+            if(!this.service.users.tokenExists(follower.token)) {
                 return false;
             }
 
             // follower record exists
-            if (await this.exists(follower.token, email)) {
+            if (await this.exists(follower.token, follower.email)) {
                 return false;
             }
 
@@ -84,8 +82,7 @@ module.exports = app => {
 
         // Get some investor's followers
         async getMyFollowers(email) {
-            const users = new Users();
-            let token = await users.query(['token'], { email });
+            let token = await this.service.users.query(['token'], { email });
             token = token.token || false;
 
             // can not get investor's dtoken
@@ -117,9 +114,8 @@ module.exports = app => {
                     return false;
                 }
 
-                const users = new Users();
-                const refEmail = await users._query(['email'], { token });
-                return refEmail[0] && refEmail[0].email || false;
+                const refEmail = await this.service.users.query(['email'], { token: referral });
+                return refEmail&& refEmail.email || false;
             } catch (err) {
                 this.logger.error(`get referral failed of ${email}`);
                 return false;

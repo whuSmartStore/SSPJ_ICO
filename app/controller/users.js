@@ -45,8 +45,13 @@ module.exports = app => {
         async modifyUserInfo() {
 
             const email = this.getEmail();
-
             const user = this.ctx.reuqest.body;
+            
+            // when user's ethAddress included change ethAddress to lowercase
+            if (user.ethAddress) {
+                user.ethAddress = user.ethAddress.toLowerCase();
+            }
+
             if (!await this.service.users.update(user, { email })) {
                 this.response(403, `update user's info failed`);
                 return;
@@ -147,6 +152,7 @@ module.exports = app => {
 
             // Judge if the investor referraled by some other
             const referral = this.getToken();
+            this.setToken(null);
             if (referral) {
                 await this.service.followers.insert({ token: referral, email: user.email });
             }
