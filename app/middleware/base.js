@@ -30,7 +30,7 @@ module.exports = ctx => {
 
         // Set referral link investor getted when register
         setToken(token) {
-            this.ctx.cookies.set('token', token, {
+            ctx.cookies.set('token', token, {
                 maxAge: 1000 * 60 * 60 * 24,
                 expires: 1000 * 60 * 60 * 24,
                 path: '/',
@@ -67,7 +67,7 @@ module.exports = ctx => {
 
         // Get referral link investor getted when register
         getToken() {
-            return this.ctx.cookies.get('token', {
+            return ctx.cookies.get('token', {
                 signed: true,
                 encrypt: true
             });

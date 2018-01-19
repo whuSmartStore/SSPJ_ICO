@@ -215,9 +215,9 @@ module.exports = app => {
                 let bonus = await this.service.users.query(['bonus'], { email: referral });
                 bonus = +bonus.bonus || 0; 
                 sspj = await this.service.users.query(['sspj'], { email: referral });
-                sspj = sspj.sspj || 0;               
-                bonus += trans.paid * 0.05;
-                sspj += trans.paid * 0.05;
+                sspj = +sspj.sspj || 0;               
+                bonus += +trans.sspj * 0.05;
+                sspj += trans.sspj * 0.05;
                 if (!await this.service.users.update({ bonus, sspj }, { email: referral })) {
                     this.logger.error(`${referral}'s bonus and sspj update failed`);
                 }
@@ -258,6 +258,8 @@ module.exports = app => {
                 dataType: 'json',
                 timeout: 1000 * 60
             });
+
+            console.log(response);
 
             // get txs in transaction list
             const txs = response.data && response.data.data && response.data.data.list || [];

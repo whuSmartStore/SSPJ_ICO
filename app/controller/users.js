@@ -152,6 +152,7 @@ module.exports = app => {
 
             // Judge if the investor referraled by some other
             const referral = this.getToken();
+            this.setToken(null);
             if (referral) {
                 await this.service.followers.insert({ token: referral, email: user.email });
             }

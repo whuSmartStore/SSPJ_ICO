@@ -65,7 +65,7 @@ module.exports = app => {
             }
 
             // follower record exists
-            if (await this.exists(follower.token, email)) {
+            if (await this.exists(follower.token, follower.email)) {
                 return false;
             }
 
@@ -114,8 +114,8 @@ module.exports = app => {
                     return false;
                 }
 
-                const refEmail = await this.service.users._query(['email'], { token });
-                return refEmail[0] && refEmail[0].email || false;
+                const refEmail = await this.service.users.query(['email'], { token: referral });
+                return refEmail&& refEmail.email || false;
             } catch (err) {
                 this.logger.error(`get referral failed of ${email}`);
                 return false;
