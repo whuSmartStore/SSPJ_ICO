@@ -1,29 +1,4 @@
+https://chain.api.btc.com/v3/address/1E9Wd2H7ePYGeQk8eQkExvBWSdAgM1zuDA
 
 
-const nodemailer = require('nodemailer');
-
-const transporter = nodemailer.createTransport({
-  host: 'smtp.qq.com',
-  secureConnection: true,
-  port: 465,
-  auth: {
-    user: '1942750262@qq.com',
-    pass: 'yykhngwjmmexbgci'
-  }
-});
-
-const emailOptions = {
-  from: 'sspj_ico team <1942750262@qq.com>',
-  to: 'sincerely investor <2794918382@qq.com>',
-  subject: '',
-  text: '',
-  html: '', 
-}
-
-transporter.sendMail(emailOptions, function(err, info) {
-  if (err) {
-    console.log(err);
-  }
-  console.log('email send successed');
-  transporter.close();
-})
+https://chain.api.btc.com/v3/tx/0eab89a271380b09987bcee5258fca91f28df4dadcedf892658b9bc261050d96?verbose=3&_ga=2.209316497.2085550806.1516186563-431565987.1516186563

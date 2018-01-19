@@ -48,13 +48,7 @@ module.exports = app => {
                 html: page,
             }
 
-            const result = await this._send(transporter, emailOptions);
-            if (result.send) {
-                return 'email send successed!';
-            }
-
-            this.logger.error(result.err);
-            return 'email send failed!'
+            return await this._send(transporter, emailOptions);
         }
 
 

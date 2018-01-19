@@ -15,9 +15,13 @@ module.exports = app => {
                     firstName: undefined,
                     lastName: undefined,
                     address: undefined,
+                    invested: undefined,
+                    bonus: undefined,
                     sspj: undefined,
                     ethAddress: undefined,
                     ethAddressModifiable: undefined,
+                    btcAddress: undefined,
+                    btcAddressModifiable: undefined,
                     token: undefined,
                     auth: undefined,
                     createAt: undefined
@@ -140,6 +144,11 @@ module.exports = app => {
 
             // do not specified user
             if (!wheres.email) {
+                return false;
+            }
+
+            // user doesn't exist in table users
+            if (!await this.exists(wheres.email)) {
                 return false;
             }
 

@@ -33,8 +33,8 @@ module.exports = app => {
         // Set email to cookie
         setEmail(email) {
             this.ctx.cookies.set('username', email, {
-                maxAge: 1000 * 60 * 60 * 24 * 3,
-                expires: 1000 * 60 * 60 * 24 * 3,
+                maxAge: 1000 * 60 * 60 * 3,
+                expires: 1000 * 60 * 60 * 3,
                 path: '/',
                 signed: true,
                 encrypt: false
@@ -47,7 +47,19 @@ module.exports = app => {
             this.ctx.cookies.set('password', password, {
                 maxAge: 1000 * 60 * 60 * 3,
                 expires: 1000 * 60 * 60 * 3,
-                path:'/',
+                path: '/',
+                signed: true,
+                encrypt: true
+            });
+        }
+
+
+        // Set referral link investor getted when register
+        setToken(token) {
+            this.ctx.cookies.set('token', token, {
+                maxAge: 1000 * 60 * 60 * 24,
+                expires: 1000 * 60 * 60 * 24,
+                path: '/',
                 signed: true,
                 encrypt: true
             });
@@ -74,6 +86,15 @@ module.exports = app => {
         getPassword() {
             return this.ctx.cookies.get('password', {
                 singed: true,
+                encrypt: true
+            });
+        }
+
+
+        // Get referral link investor getted when register
+        getToken() {
+            return this.ctx.cookies.get('token', {
+                signed: true,
                 encrypt: true
             });
         }

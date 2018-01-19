@@ -9,11 +9,13 @@ CREATE TABLE public.users
     firstName varchar(50),
     lastName varchar(50),
     address varchar(50),
-    invested bigint default 0,
-    bunos bigint default 0,
-    sspj bigint default 0,
+    invested numeric(13, 4) default 0,
+    bonus numeric(13, 4) default 0,
+    sspj numeric(13, 4) default 0,
     ethAddress varchar(50),
     ethAddressModifiable boolean default true,
+    btcAddress varchar(50),
+    btcAddressModifiable boolean default true,
     token varchar(250),
     auth boolean default false,
     createAt bigint
@@ -56,10 +58,10 @@ CREATE TABLE public.bills
 (
     id serial primary key,
     email varchar(50),
-    paid bigint,
+    paid numeric(13, 4),
     payType varchar(50) default 'ETH',
     type varchar(50) default 'Token Bought',
-    sspj bigint,
+    sspj numeric(13, 4),
     TXHash varchar(200),
     createAt bigint,
     block bigint
@@ -96,7 +98,7 @@ ALTER TABLE public.questions
 
 
 
-### wallet
+### wallets
 
 ```postgresql
 
@@ -143,9 +145,12 @@ CREATE TABLE public.sspj
 (
     id serial primary key,
     type varchar(50),
-    amount bigint,
-    usage varchar(50)
-) 
+    usage varchar(50),
+    total numeric(13, 4),
+    amount numeric(13, 4),
+    rate numeric(3, 2),
+    remain numeric(13, 4)
+)
 WITH (
   OIDS = FALSE
 );

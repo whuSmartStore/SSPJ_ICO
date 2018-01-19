@@ -59,7 +59,7 @@ module.exports = app => {
         // Active account(through validate email)
         async sendEmail(email) {
             const token = this.service.crypto.encrypto(email);
-            const url = `http://121.201.13.217/27002/api/v1/users/sign/auth/validateEmail?token=${token}`;
+            const url = `http://${this.config.dns.host}:${this.config.dns.port}/api/v1/users/sign/auth/validateEmail?token=${token}`;
             await this.service.email.activeAccount(email, url);
         }
 
@@ -67,7 +67,7 @@ module.exports = app => {
         // Resend email when user forget auth
         async resendEmailAuth() {
             
-            const email = this.ctx.request.body.email;
+            let email = this.ctx.request.body.email;
             
             // user doesn't exist(email doesn't exists in table users)
             if (this.service.users.exists(email)) {
@@ -75,7 +75,12 @@ module.exports = app => {
                 return;
             }
 
-            await this.sendEmail(email);
+            email = await this.sendEmail(email);
+            if (!email.send) {
+                this.response(400, 'Email send failed');
+                return;
+            }
+
             this.response(203, `please check your email(${email} to active your account`);
         }
 
@@ -84,6 +89,15 @@ module.exports = app => {
         async validateEmail() {
             
             const token = this.ctx.query.token;
+            
+
+            // validate length of token right or not
+            const tokLen = token.toString().length;
+            if (tokLen !== 32 && tokLen !== 64 && token !== 128 && token !== 256) {
+                this.response(403, 'token error');
+                return;
+            }
+
             const email = this.service.crypto.decrypto(token);
 
             // token error
@@ -104,12 +118,6 @@ module.exports = app => {
 
         // Register a new user
         async register() {
-
-            // redirect to ico dashbord directly when cookie record exists
-            if (await this.cookiesSetted()) {
-                this.ctx.redirect('/public/ico/dashbord.html');
-                return;
-            }
 
             const user = this.ctx.request.body;
 
@@ -137,6 +145,12 @@ module.exports = app => {
                 return;
             }
 
+            // Judge if the investor referraled by some other
+            const referral = this.getToken();
+            if (referral) {
+                await this.service.followers.insert({ token: referral, email: user.email });
+            }
+
             // active account(through validate email) and redirect to login page
             await this.sendEmail(user.email);
             this.response(203, 'Email has beed sent, please check you email and click active link to active account');
@@ -146,7 +160,7 @@ module.exports = app => {
         // Redirect to password reset page
         async getresetPWPage() {
             const token = this.ctx.query.token;
-            this.ctx.redirect(`http://121.201.13.217/27002/public/resetPW.html?token=${token}`);
+            this.ctx.redirect(`http://${this.config.dns.host}:${this.config.dns.port}/public/resetPW.html?token=${token}`);
         }
 
 
@@ -155,6 +169,14 @@ module.exports = app => {
 
             let password = this.ctx.request.body.password;
             const token = this.ctx.query.token;
+
+            // validate token is right or not
+            const tokLen = token.toString().length;
+            if (tokLen !== 32 && tokLen !== 64 && token !== 128 && token !== 256) {
+                this.response(403, 'token error');
+                return;
+            }
+
             const email = this.service.crypto.decrypto(token);
             
             // Token error
@@ -196,13 +218,7 @@ module.exports = app => {
         
         // User logIn through default way
         async signIn() {
-            
-            // redirect to ico dashbord directly when cookie record exists
-            if (await this.cookiesSetted()) {
-                this.ctx.redirect('/public/ico/dashbord.html');
-                return;
-            }
-            
+
             // user logIn in common path
             const user = this.ctx.request.body;
 
@@ -219,7 +235,7 @@ module.exports = app => {
             // redirect to activeAccount page when account hasn't been actived
             const auth = await this.service.users.query(['auth'], { email: user.email });
             if (auth === '{}' || !auth.auth) {
-                this.ctx.redirect(`/public/activeAccount.html?email=${user.email}`);
+                this.response(403, `account haven't been activated, please click the active link to redirect active account page`);
                 return;
             }
 
@@ -247,7 +263,7 @@ module.exports = app => {
             }
 
             // user logIn with google account
-            this.response(200, 'waited to complete');  //-------------------------
+            this.response(200, 'waited to complete');
         }
 
 
@@ -261,7 +277,7 @@ module.exports = app => {
             }
 
             // user logIn with google account
-            this.response(200, 'waited to complete'); //----------------------------
+            this.response(200, 'waited to complete');
         }
 
 
@@ -279,6 +295,24 @@ module.exports = app => {
             }
 
             this.ctx.redirect('/public/register.html');
+        }
+
+
+        // Confirm eth address modifiable or not
+        async ethModifiable() {
+            const email = this.getEmail();
+            let modifiable = await this.service.users.query(['ethAddressModifiable'], email);
+            modifiable = modifiable[0] && modifiable[0].ethaddressmodifiable || false;
+            this.response(200, { modifiable });
+        }
+
+
+        // Confirm btc address modifiable or not
+        async btcModifiable() {
+            const email = this.getEmail();
+            let modifiable = await this.service.users.query(['btcAddressModifiable'], email);
+            modifiable = modifiable[0] && modifiable[0].btcaddressmodifiable || false;
+            this.response(200, { modifiable });
         }
     }
 

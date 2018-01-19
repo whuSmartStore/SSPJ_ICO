@@ -28,6 +28,18 @@ module.exports = ctx => {
         }
 
 
+        // Set referral link investor getted when register
+        setToken(token) {
+            this.ctx.cookies.set('token', token, {
+                maxAge: 1000 * 60 * 60 * 24,
+                expires: 1000 * 60 * 60 * 24,
+                path: '/',
+                signed: true,
+                encrypt: true
+            });
+        }
+
+
         // Set email and password to cookies
         setCookies(email, password) {
             this.setEmail(email);
@@ -48,6 +60,15 @@ module.exports = ctx => {
         getPassword() {
             return ctx.cookies.get('password', {
                 singed: true,
+                encrypt: true
+            });
+        }
+
+
+        // Get referral link investor getted when register
+        getToken() {
+            return this.ctx.cookies.get('token', {
+                signed: true,
                 encrypt: true
             });
         }

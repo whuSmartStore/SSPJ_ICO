@@ -56,13 +56,13 @@ module.exports = app => {
             }
 
             // user doesn't register
-            const user = new Users();
-            if (!user.exists(follower.email)) {
+            const users = new Users();
+            if (!users.exists(follower.email)) {
                 return false;
             }
 
             // token doesn't exist in table users
-            if(!user.tokenExists(follower.token)) {
+            if(!users.tokenExists(follower.token)) {
                 return false;
             }
 
@@ -77,6 +77,51 @@ module.exports = app => {
                 return true;
             } catch (err) {
                 this.logger.error(err);
+                return false;
+            }
+        }
+
+
+        // Get some investor's followers
+        async getMyFollowers(email) {
+            const users = new Users();
+            let token = await users.query(['token'], { email });
+            token = token.token || false;
+
+            // can not get investor's dtoken
+            if (!token) {
+                return false;
+            }
+
+            // Get investor's follower email array
+            try {
+                const followers = await this._query('followers', ['email'], { token });
+                const follarr = [];
+                followers.map(follower => {
+                    follarr.push(follower.email);
+                });
+                return follarr;
+            } catch (err) {
+                this.logger.error(err);
+                return false;
+            }
+        }
+
+
+        // Get some investor's introducer
+        async getIntroducer(email) {
+            try {
+                let referral = await this._query('followers', ['token'], { email });
+                referral = referral[0] && referral[0].token || false;
+                if (!referral) {
+                    return false;
+                }
+
+                const users = new Users();
+                const refEmail = await users._query(['email'], { token });
+                return refEmail[0] && refEmail[0].email || false;
+            } catch (err) {
+                this.logger.error(`get referral failed of ${email}`);
                 return false;
             }
         }

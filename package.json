@@ -10,6 +10,8 @@
     "/public/resetPW.html": true,
     "/public/activeAccount.html": true,
     "/public/home.html": true,
+    "/api/v1/icoInfo/btcPrice": true,
+    "/api/v1/icoInfo/ethPrice": true,
     "/": true
   },
   "scripts": {

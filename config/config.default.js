@@ -4,7 +4,7 @@ module.exports = appInfo => {
 
     const config = {
 
-        middleware: ['recognize', 'validate', 'response'],
+        middleware: ['response', 'recognize', 'referralMonitor', 'validate'],
 
         recognize: {
             match(ctx) {
@@ -13,10 +13,24 @@ module.exports = appInfo => {
                 let flag = false;
                 const url = ctx.request.url;
 
-                // judge weather url is /public/login.html, /public/register.html
+                // judge whether url is /public/login.html, /public/register.html, / or not
                 if (url === '/public/login.html' || 
                     url === '/public/register.html' ||
                     url === '/') {
+                    return true;
+                }
+
+                return false;
+            }
+        },
+
+        referralMonitor: {
+            match(ctx) {
+
+                const url = ctx.request.url;
+
+                // middleware referralMonitor just match request url '/'
+                if (url === '/') {
                     return true;
                 }
 
@@ -86,72 +100,64 @@ module.exports = appInfo => {
         },
     }
 
-    config.db = {
-        user: 'sspj_ico',
-        password: 'sspj_ico_11',
-        database: 'sspj_ico',
-        host: '121.201.13.217',
-        port: '25432',
-        poolSize: 50
-    }
-
-    config.bunoses = [
+    config.bonuses = [
         {
-            time: 1515559629000,
-            buons: 0.2,
-            amount: 13777764
+            time: 1527866969000,
+            bonus: 0.2
         },
         {
-            time: 1515559659000,
-            buons: 0.15,
-            amount: 13777764
+            time: 1529076569000,
+            bonus: 0.15
         },
         {
-            time: 1515559684000,
-            buons: 0.13,
-            amount: 13777764
+            time: 1530458969000,
+            bonus: 0.13
         },
         {
-            time: 1515559707000,
-            buons: 0.11,
-            amount: 13777764
+            time: 1531668569000,
+            bonus: 0.11
         },
         {
-            time: 1515559720000,
-            buons: 0.09,
-            amount: 13777764
+            time: 1533137369000,
+            bonus: 0.09
         },
         {
-            time: 1515559738000,
-            buons: 0.07,
-            amount: 13777764
+            time: 1534346969000,
+            bonus: 0.07
         },
         {
-            time: 1515559756000,
-            buons: 0.05,
-            amount: 13777764
+            time: 1535815769000,
+            bonus: 0.05
         },
         {
-            time: 1515559773000,
-            buons: 0.03,
-            amount: 13777764
+            time: 1537025369000,
+            bonus: 0.03
         },
         {
-            time: 1515559787000,
-            buons: 0,
-            amount: 27555528
+            time: 1538407769000,
+            bonus: 0
         }
     ];
 
     config.icoInfo = {
         duration: ['Main Sale', '2017-6-1 2017-10-1'],
         SSPJ: ['Sales Volume on Main Sale', 41333292],
-        softCap: ['Soft-cap on Main Sale', '$ 12253000'],
+        softCap: ['Soft-cap on Main Sale', '121021 ETH'],
         hardCap: ['Hard-cap on Main Sale', '8267 ETH'],
-        salePrice: ['Main Sale price', '1 ETH = 5000 SSPJ(1 SSPJ = 0.0002 ETH)'],
+        salePrice: ['Main Sale price', 5000],
         minPurchase: ['Minimum Purchase Transaction Sum', 0.01],
         maxPurchase: ['Maximum Purchase Transaction Sum', 'unlimited'],
-    }
+    };
+
+    config.address = {
+        eth: '0xe13cCeb9B98228d8434439E9F828B7906Ae9CF41',
+        btc: '1E9Wd2H7ePYGeQk8eQkExvBWSdAgM1zuDA'
+    };
+
+    config.token = {
+        eth: 'N64H9R6X9XBE57USYIFFKYM649A33AEJRM',
+        btc: ''
+    };
 
     return config;
 }
