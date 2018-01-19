@@ -259,8 +259,6 @@ module.exports = app => {
                 timeout: 1000 * 60
             });
 
-            console.log(response);
-
             // get txs in transaction list
             const txs = response.data && response.data.data && response.data.data.list || [];
             if (txs.length === 0) {
