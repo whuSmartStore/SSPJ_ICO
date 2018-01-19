@@ -55,10 +55,20 @@ module.exports = app => {
         // Active account link email
         async activeAccount(investor, url) {
             const page = `
-                <div style="width: 600px;  height: 400px; padding-top: 200px; background:url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516282646205&di=2da67ffcf23ddae0ce4061d5deb7f594&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Feac4b74543a98226a619951a8182b9014a90eb37.jpg') no-repeat">
-                    <a href="${url}" style="font-size: 24px; text-align: center; display: block; color: pink">Active account</a>
-                    <span style="text-align: center; font-size: 20px; color: purple; display: inline-block; width: 100%; margin-top: 20px;" >Welcome to join us,click the link to confirm your account</span>
-                </div>
+                <table border="0" cellspacing="0" cellpadding="0" style="width: 600px;  height: 400px; background:url('https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1516282646205&di=2da67ffcf23ddae0ce4061d5deb7f594&imgtype=0&src=http%3A%2F%2Fimgsrc.baidu.com%2Fimgad%2Fpic%2Fitem%2Feac4b74543a98226a619951a8182b9014a90eb37.jpg') no-repeat"">
+                    <tbody>
+                        <tr>
+                            <td>
+                                <a href="${url}" style="font-size: 24px; text-align: center; display: block; color: pink">Active account</a> 
+                            </td>      
+                        </tr>
+                        <tr>
+                            <td>
+                                <span style="text-align: center; font-size: 20px; color: #ebe0e0; display: inline-block; width: 100%; margin-top: 20px;" >Welcome to join us,click the link above to confirm your account</span>
+                            </td>
+                        </tr>  
+                   </tbody>
+                </table>
             `;
             return await this.send(investor, page);
         }
