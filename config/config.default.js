@@ -4,7 +4,7 @@ module.exports = appInfo => {
 
     const config = {
 
-        middleware: ['response', 'recognize', 'referralMonitor', 'validate'],
+        middleware: ['response', 'referralMonitor', 'recognize', 'validate'],
 
         recognize: {
             match(ctx) {
@@ -13,10 +13,8 @@ module.exports = appInfo => {
                 let flag = false;
                 const url = ctx.request.url;
 
-                // judge whether url is /public/login.html, /public/register.html, / or not
-                if (url === '/public/login.html' || 
-                    url === '/public/register.html' ||
-                    url === '/') {
+                // judge whether url is / or not
+                if (url === '/') {
                     return true;
                 }
 
@@ -25,17 +23,7 @@ module.exports = appInfo => {
         },
 
         referralMonitor: {
-            match(ctx) {
-
-                const url = ctx.request.url;
-
-                // middleware referralMonitor just match request url '/'
-                if (url === '/') {
-                    return true;
-                }
-
-                return false;
-            }
+            match: '/'
         },
 
         validate: {

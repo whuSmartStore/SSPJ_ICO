@@ -8,9 +8,8 @@ module.exports = options => {
         const base = new Base();
 
         // Check if ref_id exists or not when investor request '/'
-        const ref_id = ctx.query.ref_id;
-        if (ref_id && await ctx.service.users.tokenExists(ref_id)) {
-            base.setToken(ref_id);
+        if (ctx.query.ref_id && await ctx.service.users.tokenExists(ctx.query.ref_id)) {
+            base.setToken(ctx.query.ref_id);
         }
 
         await next();
