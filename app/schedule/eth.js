@@ -4,7 +4,7 @@ module.exports = app => {
 
     return {
         schedule: {
-            interval: '10s',
+            interval: '5m',
             type: 'all',
             immediate: true,
             disable: false
