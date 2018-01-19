@@ -159,7 +159,7 @@ module.exports = app => {
                     (1 + this.getBonusRate(Date.parse(new Date())));
                 trans.sspj = (type === 'ETH') ? paid : paid * await this.service.icoInfo.btcEthRate();
                 trans.TXHash = transaction.hash;
-                trans.createAt = Date.parse(new Date());
+                trans.createAt = transaction.timeStamp * 1000;
                 trans.block = transaction.blockNumber;
                 
                 // Transaction exists in table bills
@@ -238,18 +238,23 @@ module.exports = app => {
                 dataType: 'json',
                 timeout: 500000
             });
-
+            
             const transactions = response.data.result;
+            
+            if (!transactions) {
+                this.logger.error('request eth transaction failed');
+                return;
+            }
+
             await this.task(transactions, 'ETH');
         }
 
 
         // Schedule task of btc
         async btcTask() {
-            
             // request transaction list
-            let url = `https://blockchain.info/rawaddr/${this.config.address.btc}`;
-            const response = await this.ctx.curl('https://chain.api.btc.com/v3/address/1DV2dgMqUqMRY8WouoUy45fM81XBHr88rY/tx', {
+            let url = `https://chain.api.btc.com/v3/address/${this.config.address.btc}/tx`;
+            const response = await this.ctx.curl(url, {
                 dataType: 'json',
                 timeout: 1000 * 60
             });
@@ -266,6 +271,7 @@ module.exports = app => {
                 const transaction = {};
                 transaction.hash = tx.hash;
                 transaction.blockNumber = tx.block_height;
+                transaction.timeStamp = tx.created_at;
                 
                 // set inputs object whoes key is prev_address and value is pre_value
                 const inputs = {};
