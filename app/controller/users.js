@@ -229,12 +229,12 @@ module.exports = app => {
             const user = this.ctx.request.body;
 
             if (!user.email || !user.password) {
-                this.response('email and password requried');
+                this.response(403, 'email and password requried');
                 return;
             }
 
             if (!await this.service.users.exists(user.email)) {
-                this.response('user does not exist');
+                this.response(403, 'user does not exist');
                 return;
             }
 
