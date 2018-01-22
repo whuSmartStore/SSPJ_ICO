@@ -216,7 +216,7 @@ module.exports = app => {
 
             // generate email token and url of password page
             const token = this.service.crypto.encrypto(email);
-            const url = `/api/v1/users/sign/signIn/resetPWPage?token=${token}`;
+            const url = `http://${this.config.dns.host}:${this.config.dns.port}/api/v1/users/sign/signIn/resetPWPage?token=${token}`;
             await this.service.email.resetPassword(email, url);
             this.response(203, 'Please check your email and reset your password');
         }
