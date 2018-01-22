@@ -137,6 +137,8 @@ module.exports = appInfo => {
         maxPurchase: ['Maximum Purchase Transaction Sum', 'unlimited'],
     };
 
+    // ETH imtoken Comman secret
+    // btc blockChain Comman secret
     config.address = {
         eth: '0xe13cCeb9B98228d8434439E9F828B7906Ae9CF41',
         btc: '1E9Wd2H7ePYGeQk8eQkExvBWSdAgM1zuDA'
