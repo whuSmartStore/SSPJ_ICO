@@ -99,7 +99,7 @@ module.exports = app => {
             // validate length of token right or not
             const tokLen = token.toString().length;
             if (tokLen !== 32 && tokLen !== 64 && token !== 128 && token !== 256) {
-                this.response(403, 'token error');
+                this.ctx.response(403, 'token error');
                 return;
             }
 
@@ -107,17 +107,17 @@ module.exports = app => {
 
             // token error
             if (!await this.service.users.exists(email)) {
-                this.response(403, 'token error');
+                this.ctx.redirect(`/public/validateEmail.html?code=403&info="validate_failed"`);
                 return;
             }
 
             // auth failed
             if (!await this.service.users.update({ auth: true }, { email })) {
-                this.response(403, 'active account failed');
+                this.ctx.redirect(`/public/validateEmail.html?code=403&info="validate_successed"`);
                 return;
             }
 
-            this.response(203, 'active account successed');
+            this.ctx.redirect(`/public/validateEmail.html?code=403&info="validate_failed"`);
         }
 
 
@@ -216,7 +216,7 @@ module.exports = app => {
 
             // generate email token and url of password page
             const token = this.service.crypto.encrypto(email);
-            const url = `/api/v1/users/sign/signIn/resetPWPage?token=${token}`;
+            const url = `http://${this.config.dns.host}:${this.config.dns.port}/api/v1/users/sign/signIn/resetPWPage?token=${token}`;
             await this.service.email.resetPassword(email, url);
             this.response(203, 'Please check your email and reset your password');
         }
