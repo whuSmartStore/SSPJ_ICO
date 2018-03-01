@@ -11,6 +11,7 @@ module.exports = app => {
         },
 
         async task(ctx) {
+            console.log('1');
             await ctx.service.sspj.ethTask();
         }
     }
