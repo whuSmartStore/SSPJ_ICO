@@ -52,11 +52,12 @@ module.exports = app => {
         // Query the transaction info
         async query(attributes, wheres) {
 
-            // format bills attributes to table bills
-            bill = this._formatTableValue(this.table, bill);
+            // format attributes and wheres' attributes to table bills
+            attributes = this._formatQueryAttributes(this.table, attributes);
+            wheres = this._formatTableValue(this.table, wheres);
 
             // query condition includes id or TXHash
-            if (bill.id || bill.TXHash) {
+            if (wheres.id || wheres.TXHash) {
                 try {
                     const bill = await this._query('bills', attributes, wheres);
                     return bill[0] || {};

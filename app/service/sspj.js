@@ -126,6 +126,24 @@ module.exports = app => {
             }
         }
 
+
+        // Get the index of stage according to time
+        getStage(timestamp) {
+    
+            const len = this.config.bonuses.length;
+
+            for(let i = 0; i < len - 1; i++) {
+                if (timestamp < this.config.bonuses[i].time) {
+                    return i;
+                }
+            }
+
+            if (timestamp >= this.config.bonuses[i]) {
+                return len;
+            }
+        }
+
+
         async task(transactions, type) {
 
             for (const transaction of transactions) {
@@ -197,8 +215,15 @@ module.exports = app => {
 
 
                 /* table sspj */
+                // modify investor amount info
                 await this.sub(trans.sspj, 'investor');
                 await this.sub(trans.sspj * 0.05, 'bonuses');
+
+                // modify investor stage amount info according to time
+                const stage = this.getStage(Date.parse(new Date()));
+                if (!stage) {
+                    await this.sub(trans.sspj, `investor_${stage}`);
+                }
 
 
                 /* users table bonus */
