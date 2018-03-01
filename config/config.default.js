@@ -48,6 +48,11 @@ module.exports = appInfo => {
                     flag = true;
                 }
 
+                // icoInfo ignore
+                if (url.search(/icoInfo/i) !== -1) {
+                    flag = true;
+                }
+
                 // sspj info ignore
                 if (url.search(/sspj/i) !== -1) {
                     flag = true;

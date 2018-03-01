@@ -98,45 +98,6 @@ ALTER TABLE public.questions
 
 
 
-### wallets
-
-```postgresql
-
-CREATE TABLE public.wallets
-(
-    id serial primary key,
-    wtype varchar(50) default 'ETH',
-    address varchar(50)
-) 
-WITH (
-  OIDS = FALSE
-);
-ALTER TABLE public.wallets
-  OWNER TO sspj_ico;
-
-```
-
-
-
-### wtypes
-
-```postgresql
-
-CREATE TABLE public.wtypes
-(
-    id serial primary key,
-    type varchar(50)
-) 
-WITH (
-  OIDS = FALSE
-);
-ALTER TABLE public.wtypes
-  OWNER TO sspj_ico;
-
-```
-
-
-
 ### sspj
 
 ```postgresql
