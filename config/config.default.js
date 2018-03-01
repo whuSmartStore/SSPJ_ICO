@@ -48,6 +48,11 @@ module.exports = appInfo => {
                     flag = true;
                 }
 
+                // sspj info ignore
+                if (url.search(/sspj/i) !== -1) {
+                    flag = true;
+                }
+
                 // path '/api/v1/users/exists/' ignore
                 if (url.search('/api/v1/users/exists/') !== -1) {
                     flag = true;
@@ -129,8 +134,8 @@ module.exports = appInfo => {
 
     config.icoInfo = {
         duration: ['Main Sale', '2017-6-1 2017-10-1'],
-        SSPJ: ['Sales Volume on Main Sale', 41333292],
-        softCap: ['Soft-cap on Main Sale', '121021 ETH'],
+        SSPJ: ['Sales Volume on Main Sale', 1200000000],
+        softCap: ['Soft-cap on Main Sale', '240000 ETH'],
         hardCap: ['Hard-cap on Main Sale', '8267 ETH'],
         salePrice: ['Main Sale price', 5000],
         minPurchase: ['Minimum Purchase Transaction Sum', 0.01],
@@ -141,12 +146,10 @@ module.exports = appInfo => {
     // btc blockChain Comman secret
     config.address = {
         eth: '0xe13cCeb9B98228d8434439E9F828B7906Ae9CF41',
-        btc: '1E9Wd2H7ePYGeQk8eQkExvBWSdAgM1zuDA'
     };
 
     config.token = {
         eth: 'N64H9R6X9XBE57USYIFFKYM649A33AEJRM',
-        btc: ''
     };
 
     return config;
