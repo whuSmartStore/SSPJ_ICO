@@ -9,9 +9,9 @@ CREATE TABLE public.users
     firstName varchar(50),
     lastName varchar(50),
     address varchar(50),
-    invested numeric(13, 4) default 0,
-    bonus numeric(13, 4) default 0,
-    sspj numeric(13, 4) default 0,
+    invested numeric(20, 4) default 0,
+    bonus numeric(20, 4) default 0,
+    sspj numeric(20, 4) default 0,
     ethAddress varchar(50),
     ethAddressModifiable boolean default true,
     btcAddress varchar(50),
@@ -58,10 +58,10 @@ CREATE TABLE public.bills
 (
     id serial primary key,
     email varchar(50),
-    paid numeric(13, 4),
+    paid numeric(20, 4),
     payType varchar(50) default 'ETH',
     type varchar(50) default 'Token Bought',
-    sspj numeric(13, 4),
+    sspj numeric(20, 4),
     TXHash varchar(200),
     createAt bigint,
     block bigint
@@ -106,11 +106,9 @@ CREATE TABLE public.sspj
 (
     id serial primary key,
     type varchar(50),
-    usage varchar(50),
-    total numeric(13, 4),
-    amount numeric(13, 4),
-    rate numeric(3, 2),
-    remain numeric(13, 4)
+    amount numeric(20, 4),
+    rate numeric(20, 2),
+    remain numeric(20, 4)
 )
 WITH (
   OIDS = FALSE

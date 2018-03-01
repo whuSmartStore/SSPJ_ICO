@@ -12,8 +12,6 @@ module.exports = app => {
                 this[Table] = {
                     id: undefined,
                     type: undefined,
-                    usage: undefined,
-                    total: undefined,
                     amount: undefined,
                     rate: undefined,
                     remain: undefined
@@ -75,7 +73,7 @@ module.exports = app => {
         }
 
 
-        // Get some sspj specified by usage remain amount
+        // Get some sspj specified by type remain amount
         async getLeft(type) {
 
             try {
@@ -247,53 +245,6 @@ module.exports = app => {
             }
 
             await this.task(transactions, 'ETH');
-        }
-
-
-        // Schedule task of btc
-        async btcTask() {
-            // request transaction list
-            let url = `https://chain.api.btc.com/v3/address/${this.config.address.btc}/tx`;
-            const response = await this.ctx.curl(url, {
-                dataType: 'json',
-                timeout: 1000 * 60
-            });
-
-            // get txs in transaction list
-            const txs = response.data && response.data.data && response.data.data.list || [];
-            if (txs.length === 0) {
-                return;
-            }
-
-            // generate transactions task needed
-            const transactions = [];
-            for (const tx of txs) {
-                const transaction = {};
-                transaction.hash = tx.hash;
-                transaction.blockNumber = tx.block_height;
-                transaction.timeStamp = tx.created_at;
-                
-                // set inputs object whoes key is prev_address and value is pre_value
-                const inputs = {};
-                for (const input of tx.inputs) {
-                    inputs[input.prev_addresses[0]] = { value: input.prev_value };
-                }
-
-                // btc address of all investor
-                const addresses = await this.service.users.query(['btcAddress'], {});
-
-                // confirm the value and btc address of investor
-                for (const address of addresses) {
-                    if (address.btcaddress && inputs[address.btcaddress]) {
-                        transaction.value = inputs[address.btcaddress].value;
-                        transaction.from = address.btcaddress;
-                        transactions.push(transaction);
-                        break;
-                    }
-                }
-            }
-
-            await this.task(transactions, 'BTC');
         }
     }
 
