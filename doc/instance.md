@@ -7,6 +7,8 @@
 
 
 
+
+
 ### road map
 
 https://3d-token.com/#roadmap
@@ -14,6 +16,32 @@ https://www.gizadevice.com/
 
 
 
+
+
 ### menbers and link team adnd advisor
 
 https://beat.org/
+
+
+
+
+
+### advertise platform
+
+https://icorating.com
+
+http://ico.newsbtc.com
+
+https://icobazaar.com
+
+https://icowatchlist.com/
+
+https://www.icoglory.com/
+
+https://foxico.io/premium
+
+https://topicolist.com
+
+https://www.ico-list.com
+
+https://icobench.com/
