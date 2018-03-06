@@ -13,7 +13,7 @@
 
 https://3d-token.com/#roadmap
 https://www.gizadevice.com/
-
+https://ico.aida.market/
 
 
 
@@ -45,3 +45,40 @@ https://topicolist.com
 https://www.ico-list.com
 
 https://icobench.com/
+
+https://tokenmarket.net/list-new-token-or-ico
+
+https://cryptocoincharts.info/ico
+
+https://www.worldcoinindex.com/coinrequest
+
+http://icoalert.com/
+
+
+### news platform
+
+https://www.coinjinja.com/contact
+
+https://cryptostec.com/contact/
+
+https://www.chipin.com/contact/
+
+https://orders.ccn.com/
+
+https://cointelegraph.com
+
+https://coinidol.com/advertising/
+
+https://www.mediakit.fxempire.com/
+
+advertise@coinspeaker.com
+
+listing@tokentops.com
+
+
+
+
+
+### coin exchanges
+
+https://www.worldcoinindex.com/exchange
