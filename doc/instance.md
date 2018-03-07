@@ -54,6 +54,16 @@ https://www.worldcoinindex.com/coinrequest
 
 http://icoalert.com/
 
+https://wiserico.com/
+
+https://foxico.io/
+
+https://icomarks.com/
+
+https://icotop.io/
+
+https://icocrunch.io/
+
 
 ### news platform
 
