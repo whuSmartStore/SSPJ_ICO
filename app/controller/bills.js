@@ -16,7 +16,7 @@ module.exports = app => {
         // Get the transaction info of someone specified by email
         async getTransactionInfo() {
             const email = this.getEmail();
-            const bills = await this.service.users.query(['*'], { email });
+            const bills = await this.service.bills.query(['*'], { email });
             this.response(200, bills);
         }
     }

@@ -22,6 +22,7 @@ module.exports = app => {
                     info
                 };
             }).catch(err => {
+                console.log(err);
                 return {
                     send: false,
                     err
@@ -37,7 +38,7 @@ module.exports = app => {
                 port: 465,
                 auth: {
                     user: '1942750262@qq.com',
-                    pass: 'yykhngwjmmexbgci'
+                    pass: 'laaicbkntzbkfdai'
                 }
             });
 
@@ -46,7 +47,7 @@ module.exports = app => {
                 to: `Sincerely Investor <${investor}>`,
                 subject: 'Active Account',
                 html: page,
-            }
+            };
 
             return await this._send(transporter, emailOptions);
         }

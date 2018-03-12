@@ -24,7 +24,7 @@ module.exports = app => {
 
         // Get the ICO's start time
         async getIcoStartTime() {
-            const startTime = this.app.config.bunoses[0].time;
+            const startTime = this.config.bonuses[0].time;
             this.response(200, { startTime });
         }
 

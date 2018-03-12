@@ -100,11 +100,11 @@ module.exports = appInfo => {
 
     config.bonuses = [
         {
-            time: 1519889358000,
+            time: 1525104000000,
             bonus: 1
         },
         {
-            time: 1519889514000,
+            time: 1526400000000,
             bonus: 0.5
         },
         {

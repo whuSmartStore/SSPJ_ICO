@@ -21,8 +21,9 @@ module.exports = app => {
             if (stage <= 0) {
                 this.response(200, {
                     start: false,
-                    message: `our ICO started at ${this.config.bonuses.time}`
+                    message: `ICO starts at ${this.config.bonuses[stage].time}`
                 });
+                return;
             }
 
             // Judge which stage ico in, 1: pravite sale, 2: pre sale, 3: public sale

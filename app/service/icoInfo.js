@@ -9,12 +9,12 @@ module.exports = app => {
         // Get the price of BTC(price based on kucoin exchange)
         async btcPrice() {
             
-            const response = await this.ctx.curl('https://api.kucoin.com/v1/open/currencies?coins=BTC', {
+            const response = await this.ctx.curl('https://api.coinmarketcap.com/v1/ticker/bitcoin/', {
                 dataType: 'json',
                 timeout: 1000 * 60
             });
             const data = response.data;
-            const price = data.data && data.data.rates && data.data.rates.BTC && data.data.rates.BTC.CNY || '--';
+            const price = data[0] && data[0].price_usd || '--';
             return price;
         }
 
@@ -22,12 +22,12 @@ module.exports = app => {
         // Get the price of ETH(price based on kucoin exchange)
         async ethPrice() {
 
-            const response = await this.ctx.curl('https://api.kucoin.com/v1/open/currencies?coins=ETH', {
+            const response = await this.ctx.curl('https://api.coinmarketcap.com/v1/ticker/ethereum/', {
                 dataType: 'json',
                 timeout: 1000 * 60 
             });
             const data = response.data;
-            const price = data.data && data.data.rates && data.data.rates.ETH && data.data.rates.ETH.CNY || '--';
+            const price = data[0] && data[0].price_usd || '--';
             return price;
         }
 

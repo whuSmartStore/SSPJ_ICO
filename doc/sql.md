@@ -6,8 +6,7 @@ CREATE TABLE public.users
 (
     email varchar(50) primary key,
     password varchar(250),
-    firstName varchar(50),
-    lastName varchar(50),
+    name varchar(50),
     address varchar(50),
     invested numeric(20, 4) default 0,
     bonus numeric(20, 4) default 0,

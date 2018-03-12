@@ -12,8 +12,7 @@ module.exports = app => {
                 this[Table] = {
                     email: undefined,
                     password: undefined,
-                    firstName: undefined,
-                    lastName: undefined,
+                    name: undefined,
                     address: undefined,
                     invested: undefined,
                     bonus: undefined,
