@@ -14,8 +14,6 @@ CREATE TABLE public.users
     sspj numeric(20, 4) default 0,
     ethAddress varchar(50),
     ethAddressModifiable boolean default true,
-    btcAddress varchar(50),
-    btcAddressModifiable boolean default true,
     token varchar(250),
     auth boolean default false,
     createAt bigint
