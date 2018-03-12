@@ -93,6 +93,8 @@ listing@tokentops.com
 
 https://www.worldcoinindex.com/exchange
 
+https://idex.market/
+
 
 
 
