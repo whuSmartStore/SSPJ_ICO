@@ -98,10 +98,6 @@ https://idex.market/
 
 
 
-,
-
-
-
 
 
 
