@@ -99,7 +99,7 @@ module.exports = app => {
             // validate length of token right or not
             const tokLen = token.toString().length;
             if (tokLen !== 32 && tokLen !== 64 && token !== 128 && token !== 256) {
-                this.ctx.response(403, 'token error');
+                this.response(403, 'token error');
                 return;
             }
 

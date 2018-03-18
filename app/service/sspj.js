@@ -252,17 +252,20 @@ module.exports = app => {
         async ethTask() {
             let url = `https://api.etherscan.io/api?module=account&action=txlist&`;
             url += `address=${this.config.address.eth}&`;
-            url += `startblock=0&`;
-            url += `endblock=99999999&`;
-            url += `sort=asc&`;
+            // url += `startblock=0&`;
+            // url += `endblock=99999999&`;
+            // url += `sort=asc&`;
             url += `apikey=${this.config.token.eth}`;
             
             const response = await this.ctx.curl(url, {
                 dataType: 'json',
                 timeout: 500000
             });
+
+            console.log(response);
+
             
-            const transactions = response.data.result;
+            const transactions = response.daa && response.data.result;
             
             if (!transactions) {
                 this.logger.error('request eth transaction failed');
